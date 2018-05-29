@@ -166,19 +166,19 @@ SOmap<-function(Bathleg=TRUE,
   }
   #Graticule grid
   if(Grats==TRUE){
-    plot(grat,add=TRUE, col=gratcol, lty=3)
+    raster::plot(grat,add=TRUE, col=gratcol, lty=3)
     text(gratlab, lab= parse(text = gratlab$lab), col="grey70",cex=0.5)}
 
   if(RB==TRUE){
     #load("RB.rda")
-  plot(RB1, border=rbcol, add=TRUE)}
+    raster::plot(RB1, border=rbcol, add=TRUE)}
   if(RBlab==TRUE){
     text(RB1, labels = RB1@data$ShortLabel,col=rbcol, cex = 0.4, pos=4, offset=0.3)}
   if(SPRFMORB==TRUE){
     sprfmoa<-graticule::graticule(lats=c(-59.9,-57.9),lons= c(-155.3333,-150),proj = raster::projection(Bathy))
-    plot(sprfmoa, add=TRUE, col=sprfmocol)
+    raster::plot(sprfmoa, add=TRUE, col=sprfmocol)
     sprfmob<-graticule::graticule(lats=c(-59.0,-60.0),lons= c(-142.1666667,-145.833333),proj = raster::projection(Bathy))
-    plot(sprfmob, add=TRUE, col=sprfmocol) }
+    raster::plot(sprfmob, add=TRUE, col=sprfmocol) }
   if(SSRU==TRUE){
     #load("SSRU.rda")
     plot(SSRU1,border=ssrucol, add = TRUE)}
@@ -211,14 +211,14 @@ SOmap<-function(Bathleg=TRUE,
   if(MPAlab==TRUE){
     text(MPA1, labels = MPA1@data$ShortLabel, col=mpacol,cex = 0.35, pos=1, offset=0.2)}
   #Legend
-  if(Bathleg==TRUE) {plot(j, border=F,col="white", add=T) #White mask
-    plot(btick, add=T, col=1)
-    plot(bleg, lwd=2, add=T)
-    plot(bleg, border=F,  col=bluepal2, add=T)
-    plot(k, border=F,col="white", add=T)
+  if(Bathleg==TRUE) {raster::plot(j, border=F,col="white", add=T) #White mask
+    raster::plot(btick, add=T, col=1)
+    raster::plot(bleg, lwd=2, add=T)
+    raster::plot(bleg, border=F,  col=bluepal2, add=T)
+    raster::plot(k, border=F,col="white", add=T)
     text(lab_pos2, labels=lab_pos2$a, cex= 0.75, adj=0.5)}
   if(Border==TRUE){
-    plot(bord,  col=bordercol, add=TRUE)}
+    raster::plot(bord,  col=bordercol, add=TRUE)}
   ## Return Par
   graphics::par(op)
   print("Congratulations, you did a thing!")
