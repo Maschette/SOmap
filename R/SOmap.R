@@ -141,7 +141,7 @@ SOmap<-function(Bathleg=TRUE,
   ##Set Par
   op <- graphics::par(mar = rep(0.01, 4), oma= rep(0.0, 4))
   ## Plot bathymetry
-  raster::plot(raster::trim(SOmap::latmask(Bathy, latitude = q)), col=bluepal, yaxt='n', xaxt='n', bty="n", legend=F)
+  raster::plot(raster::trim(SOmap::latmask(Bathy, latitude = q)), col=bluepal, yaxt='n', xaxt='n', bty="n", legend=F, asp=NA)
   graphics::box(col = 2)
   if(IWC==TRUE){
     # iwc<-graticule::graticule(c(-170,-120,-60,0,70,130,-230), c(-90,Trim+0.5), proj=raster::projection(Bathy))
