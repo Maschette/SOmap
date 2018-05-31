@@ -152,8 +152,10 @@ SOmap2<-function(Bathleg=TRUE,
     potato<-raster::image
     potato(raster::trim(SOmap::latmask(Bathy, latitude = q)), col=bluepal, yaxt='n', xaxt='n')}
   graphics::box(col = "white")
-  if(land==TRUE){
-    plot(land1,border=1, add = TRUE)}
+  if(land==TRUE){if(CCAMLR==TRUE){
+    notANT<-land1[land1$CONTINENT!="Antarctica",]
+    plot(notANT,border=1, add = TRUE)} else{
+    plot(land1,border=1, add = TRUE)}}
 
   if(IWC==TRUE){
     # iwc<-graticule::graticule(c(-170,-120,-60,0,70,130,-230), c(-90,Trim+0.5), proj=raster::projection(Bathy))
@@ -229,8 +231,8 @@ SOmap2<-function(Bathleg=TRUE,
     raster::plot(k, border=F,col="white", add=T)
     text(lab_pos2, labels=lab_pos2$a, cex= 0.75, adj=0.5)}
   if(Border==TRUE){
-    raster::plot(bord,  col=bordercol, add=TRUE)
-  if(CCAMLR==TRUE & land==TRUE){warning("Note: CCAMLR and land boundaries are different resolutions.", "Suggest not using both", call. = "FALSE")}}
+    raster::plot(bord,  col=bordercol, add=TRUE)}
+  #if(CCAMLR==TRUE & land==TRUE){warning("Note: CCAMLR and land boundaries are different resolutions.", "Suggest not using both", call. = "FALSE")}
   ## Return Par
   graphics::par(op)
   print("Congratulations, you did a thing!")
