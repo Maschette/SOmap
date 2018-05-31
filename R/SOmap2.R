@@ -118,7 +118,7 @@ SOmap2<-function(Bathleg=TRUE,
   bord<-graticule::graticule(lons = seq(-180,180, by=15),lats = c(Trim+2,Trim), tiles = TRUE, proj = raster::projection(Bathy))
   if(Bathleg==TRUE){
  #### White Mask #
-  j<-graticule::graticule(lons = seq(-180,180, by=1),lats = c(Trim+15,Trim+2), tiles = TRUE, proj = raster::projection(Bathy))
+  j<-graticule::graticule(lons = seq(-180,180, by=1),lats = c(-10,Trim+2), tiles = TRUE, proj = raster::projection(Bathy))
 #### Legend #
   ##Colored legend
   bleg<-graticule::graticule(lons = seq(185,265, by=1),lats = c(Trim+3,Trim+5), tiles = TRUE, proj = raster::projection(Bathy))
@@ -141,15 +141,16 @@ SOmap2<-function(Bathleg=TRUE,
   cclabs<-c("88.3","48.4","88.2","48.2","48.3","58.4.3a","58.4.3b","58.5.2","48.5","48.6","58.4.1","88.1","58.4.4a","58.7","58.6","58.5.1","58.4.4b")
 
   ## Which plot to use
-  if(straight==T){potato<-raster::plot
-  warning("Straight legends with round plots lootk terrible.", call. = "FALSE")}else{potato<-raster::image}
-
-    ## Set the Trim value depending on legend yes or no
+  ## Set the Trim value depending on legend yes or no
   ifelse(Bathleg==TRUE,q<-Trim+13,q<-Trim+2)
   ##Set Par
   op <- graphics::par(mar = rep(0.01, 4), oma= rep(0.0, 4), mai= rep(0.0, 4))
   ## Plot bathymetry
-  potato(raster::trim(SOmap::latmask(Bathy, latitude = q)), col=bluepal)#, yaxt='n', xaxt='n',)
+  if(straight==T){potato<-raster::plot
+  warning("Straight legends with round plots look terrible.", call. = "FALSE")
+  potato(raster::trim(SOmap::latmask(Bathy, latitude = q)), col=bluepal,legend=FALSE, yaxt='n', xaxt='n')}else{
+    potato<-raster::image
+    potato(raster::trim(SOmap::latmask(Bathy, latitude = q)), col=bluepal, yaxt='n', xaxt='n')}
   graphics::box(col = "white")
   if(land==TRUE){
     plot(land1,border=1, add = TRUE)}
@@ -228,7 +229,8 @@ SOmap2<-function(Bathleg=TRUE,
     raster::plot(k, border=F,col="white", add=T)
     text(lab_pos2, labels=lab_pos2$a, cex= 0.75, adj=0.5)}
   if(Border==TRUE){
-    raster::plot(bord,  col=bordercol, add=TRUE)}
+    raster::plot(bord,  col=bordercol, add=TRUE)
+  if(CCAMLR==TRUE & land==TRUE){warning("Note: CCAMLR and land boundaries are different resolutions.", "Suggest not using both", call. = "FALSE")}}
   ## Return Par
   graphics::par(op)
   print("Congratulations, you did a thing!")

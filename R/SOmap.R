@@ -72,13 +72,16 @@ SOmap<-function(Bathleg=TRUE,
   ## Set the Trim value depending on legend yes or no
   ifelse(Bathleg==TRUE,q<-Trim+13,q<-Trim+2)
 
-  ## Which plot to use
-  if(straight==T){potato<-raster::plot
-  warning("Straight legends with round plots lootk terrible.", call. = "FALSE")}else{potato<-raster::image}
+
   ##Set Par
   op <- graphics::par(mar = rep(0.01, 4), oma= rep(0.0, 4), mai= rep(0.0, 4))
   ## Plot bathymetry
-  potato(raster::trim(SOmap::latmask(Bathy, latitude = q)), col=bluepal)#, yaxt='n', xaxt='n',)
+  if(straight==T){potato<-raster::plot
+  warning("Straight legends with round plots look terrible.", call. = "FALSE")
+  potato(raster::trim(SOmap::latmask(Bathy, latitude = q)), col=bluepal,legend=FALSE, yaxt='n', xaxt='n')}else{
+    potato<-raster::image
+    potato(raster::trim(SOmap::latmask(Bathy, latitude = q)), col=bluepal, yaxt='n', xaxt='n')}
+
   graphics::box(col = "white")
   if(land==TRUE){
     plot(land1,border=1, add = TRUE)}
