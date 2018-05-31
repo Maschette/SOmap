@@ -4,35 +4,12 @@
 \alias{SOmap}
 \title{Southern Ocean Map}
 \usage{
-SOmap(Bathleg = TRUE, CCAMLR = FALSE, CCAMLRlab = FALSE, SSRU = FALSE,
-  SSRUlab = FALSE, SSMU = FALSE, SSMUlab = FALSE, RB = FALSE,
-  RBlab = FALSE, SPRFMORB = FALSE, Border = TRUE, Trim = -45,
-  Grats = FALSE, EEZ = FALSE, EEZlab = FALSE, MPA = FALSE,
-  MPAlab = FALSE, IWC = FALSE, IWClab = FALSE, rbcol = 3,
-  sprfmocol = "grey50", ccamlrcol = 2, ssrucol = "grey50",
-  ssmucol = "grey70", eezcol = "maroon", mpacol = "yellow",
-  bordercol = c("white", "black"), gratcol = "grey70", iwccol = "blue")
+SOmap(Bathleg = TRUE, Border = TRUE, Trim = -45, Grats = FALSE,
+  straight = FALSE, land = TRUE, bordercol = c("white", "black"),
+  gratcol = "grey70")
 }
 \arguments{
 \item{Bathleg}{Insert the bathymetry legend.}
-
-\item{CCAMLR}{Insert the CCAMLR boundaries.}
-
-\item{CCAMLRlab}{Insert the CCAMLR labels.}
-
-\item{SSRU}{Insert the CCAMLR small scale research unit boundaries.}
-
-\item{SSRUlab}{Insert the CCAMLR small scale research unit labels.}
-
-\item{SSMU}{Insert the CCAMLR small scale management unit boundaries.}
-
-\item{SSMUlab}{Insert the CCAMLR small scale management unit labels.}
-
-\item{RB}{Insert the CCAMLR research block boundaries.}
-
-\item{RBlab}{Insert the CCAMLR research block labels.}
-
-\item{SPRFMORB}{Insert the SPRFMO toothfish research block boundaries.}
 
 \item{Border}{Insert longitude border.}
 
@@ -40,41 +17,17 @@ SOmap(Bathleg = TRUE, CCAMLR = FALSE, CCAMLRlab = FALSE, SSRU = FALSE,
 
 \item{Grats}{Insert graticule grid.}
 
-\item{EEZ}{Insert Exclusive Economic Zones.}
+\item{straight}{Do you need a blank space on the side for a straight legend.}
 
-\item{EEZlab}{Insert Exclusive Economic Zone labels.}
+\item{land}{Plot land boundary
 
-\item{MPA}{Insert CCAMLE Marine Protected Areas.}
-
-\item{MPAlab}{Insert CCAMLE Marine Protected Area labels.}
-
-\item{IWC}{Insert International Whaling Commission boundaries.}
-
-\item{IWClab}{Insert International Whaling Commission labels.}
-
-\item{rbcol}{Color for CCAMLR research blocks.}
-
-\item{sprfmocol}{Color for SPRFMO toothfish research blocks}
-
-\item{ccamlrcol}{Color for CCAMLR boundaries}
-
-\item{ssrucol}{Color for CCAMLR small scale research units.}
-
-\item{ssmucol}{Color for CCAMLR small scale management units.}
-
-\item{eezcol}{Color for Exclusive Economic Zone boundaries; Default is maroon.}
-
-\item{mpacol}{Color for CCAMLR Marine Protected Areas; Default is yellow.}
+ @return
+Produces at the very base a round bathymetry map of the southern hemisphere.}
 
 \item{bordercol}{Colors for longitude border; Default is c("black","white").}
 
 \item{gratcol}{Color for graticule grid; Default is grey.}
-
-\item{iwccol}{Color for IWC boundaries; Default is blue.}
-}
-\value{
-Produces at the very base a round bathymetry map of the southern hemisphere.
 }
 \description{
-Function for creating round Southern Ocean maps with inbuild base layers.
+Function for creating round Southern Ocean maps.
 }
