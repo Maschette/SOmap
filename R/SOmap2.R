@@ -152,7 +152,7 @@ SOmap2<-function(Bathleg=TRUE,
   potato(raster::trim(SOmap::latmask(Bathy, latitude = q)), col=bluepal)#, yaxt='n', xaxt='n',)
   graphics::box(col = "white")
   if(land==TRUE){
-    plot(land,border=1, add = TRUE)}
+    plot(land1,border=1, add = TRUE)}
 
   if(IWC==TRUE){
     # iwc<-graticule::graticule(c(-170,-120,-60,0,70,130,-230), c(-90,Trim+0.5), proj=raster::projection(Bathy))
