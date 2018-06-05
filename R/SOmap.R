@@ -19,6 +19,8 @@
 #' Do you need a blank space on the side for a straight legend.
 #' @param land
 #' Plot land boundary
+#' @param fronts
+#' Plot ocean fronts: Subantarctic Front, Polar Front, Southern Antarctic Circumpolar Current Front
 #'
 #'  @return
 #' Produces at the very base a round bathymetry map of the southern hemisphere.
@@ -38,9 +40,10 @@ SOmap<-function(Bathleg=TRUE,
                 Grats= FALSE,
                 straight=FALSE,
                 land=TRUE,
+                fronts=FALSE,
+                frontcols=c("hotpink","orchid","plum"),
                 bordercol=c("white","black"),
                 gratcol="grey70"){
-
 #### Set up color palette for bathy #
   ramp2<-grDevices::colorRampPalette(c("#54A3D1","#60B3EB","#78C8F0","#98D1F5","#B5DCFF","#BDE1F0","#CDEBFA","#D6EFFF","#EBFAFF","grey92","grey94","grey96", "white"))
   bluepal<-ramp2(68)
@@ -85,6 +88,9 @@ SOmap<-function(Bathleg=TRUE,
   graphics::box(col = "white")
   if(land==TRUE){
     plot(land1,border=1, add = TRUE)}
+  #fronts
+  if(fronts==TRUE){
+    plot(ocean2,add=TRUE, col=frontcols[ocean2$NAME])}
 
   #Graticule grid
   if(Grats==TRUE){

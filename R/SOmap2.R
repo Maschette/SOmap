@@ -65,6 +65,10 @@
 #' Do you need a blank space on the side for a straight legend.
 #' @param land
 #' Plot land boundary
+#' @param land
+#' Plot land boundary
+#' @param fronts
+#' Plot ocean fronts: Subantarctic Front, Polar Front, Southern Antarctic Circumpolar Current Front
 #'
 #' @return
 #' Produces at the very base a round bathymetry map of the southern hemisphere.
@@ -99,6 +103,8 @@ SOmap2<-function(Bathleg=TRUE,
                 IWC=FALSE,
                 IWClab=FALSE,
                 straight=FALSE,
+                fronts=FALSE,
+                frontcols=c("hotpink","orchid","plum"),
                 rbcol=3,
                 sprfmocol='grey50',
                 ccamlrcol=2,
@@ -178,6 +184,10 @@ SOmap2<-function(Bathleg=TRUE,
 
     text(lab_pos3, labels = lab_pos3$a,col=iwccol, cex = 0.4, pos=1, offset=-0.05)
   }
+  #fronts
+  if(fronts==TRUE){
+    plot(ocean2,add=TRUE, col=frontcols[ocean2$NAME])}
+
   #Graticule grid
   if(Grats==TRUE){
     raster::plot(grat,add=TRUE, col=gratcol, lty=3)
