@@ -83,7 +83,7 @@
 #'
 
 SOmap2<-function(Bathleg=TRUE,
-                 land=TRUE,
+                 #land=TRUE,
                 CCAMLR= FALSE,
                 CCAMLRlab= FALSE,
                 SSRU= FALSE,
