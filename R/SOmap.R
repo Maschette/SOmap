@@ -90,7 +90,7 @@ SOmap<-function(Bathleg=TRUE,
     plot(land1,border=1, add = TRUE)}
   #fronts
   if(fronts==TRUE){
-    plot(ocean2,add=TRUE, col=frontcols[ocean2$NAME])}
+    plot(ocean2,add=TRUE, col=frontcols[droplevels(ocean2$NAME)])}
 
   #Graticule grid
   if(Grats==TRUE){
