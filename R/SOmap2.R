@@ -65,8 +65,8 @@
 #' Do you need a blank space on the side for a straight legend.
 #' @param land
 #' Plot land boundary
-#' @param land
-#' Plot land boundary
+#' @param frontcols
+#' colors for fronts
 #' @param fronts
 #' Plot ocean fronts: Subantarctic Front, Polar Front, Southern Antarctic Circumpolar Current Front
 #'

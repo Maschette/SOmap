@@ -21,8 +21,6 @@
 #' Insert the CCAMLR research block labels.
 #' @param SPRFMORB
 #' Insert the SPRFMO toothfish research block boundaries.
-#' @param Border
-#' Insert longitude border.
 #' @param Trim
 #' Longitude to trim map to.
 #' @param Grats

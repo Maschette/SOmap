@@ -9,7 +9,8 @@ SOmap2(Bathleg = TRUE, land = TRUE, CCAMLR = FALSE, CCAMLRlab = FALSE,
   RB = FALSE, RBlab = FALSE, SPRFMORB = FALSE, Border = TRUE,
   Trim = -45, Grats = FALSE, EEZ = FALSE, EEZlab = FALSE, MPA = FALSE,
   MPAlab = FALSE, IWC = FALSE, IWClab = FALSE, straight = FALSE,
-  rbcol = 3, sprfmocol = "grey50", ccamlrcol = 2, ssrucol = "grey50",
+  fronts = FALSE, frontcols = c("hotpink", "orchid", "plum"), rbcol = 3,
+  sprfmocol = "grey50", ccamlrcol = 2, ssrucol = "grey50",
   ssmucol = "grey70", eezcol = "maroon", mpacol = "yellow",
   bordercol = c("white", "black"), gratcol = "grey70", iwccol = "blue")
 }
@@ -55,6 +56,10 @@ SOmap2(Bathleg = TRUE, land = TRUE, CCAMLR = FALSE, CCAMLRlab = FALSE,
 \item{IWClab}{Insert International Whaling Commission labels.}
 
 \item{straight}{Do you need a blank space on the side for a straight legend.}
+
+\item{fronts}{Plot ocean fronts: Subantarctic Front, Polar Front, Southern Antarctic Circumpolar Current Front}
+
+\item{frontcols}{colors for fronts}
 
 \item{rbcol}{Color for CCAMLR research blocks.}
 

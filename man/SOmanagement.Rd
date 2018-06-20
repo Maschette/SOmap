@@ -67,8 +67,6 @@ SOmanagement(CCAMLR = FALSE, CCAMLRlab = FALSE, SSRU = FALSE,
 \item{gratcol}{Color for graticule grid; Default is grey.}
 
 \item{iwccol}{Color for IWC boundaries; Default is blue.}
-
-\item{Border}{Insert longitude border.}
 }
 \value{
 Produces at the very base a round bathymetry map of the southern hemisphere.

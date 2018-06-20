@@ -5,8 +5,9 @@
 \title{Southern Ocean Map}
 \usage{
 SOmap(Bathleg = TRUE, Border = TRUE, Trim = -45, Grats = FALSE,
-  straight = FALSE, land = TRUE, bordercol = c("white", "black"),
-  gratcol = "grey70")
+  straight = FALSE, land = TRUE, fronts = FALSE,
+  frontcols = c("hotpink", "orchid", "plum"), bordercol = c("white",
+  "black"), gratcol = "grey70")
 }
 \arguments{
 \item{Bathleg}{Insert the bathymetry legend.}
@@ -19,7 +20,11 @@ SOmap(Bathleg = TRUE, Border = TRUE, Trim = -45, Grats = FALSE,
 
 \item{straight}{Do you need a blank space on the side for a straight legend.}
 
-\item{land}{Plot land boundary
+\item{land}{Plot land boundary}
+
+\item{fronts}{Plot ocean fronts: Subantarctic Front, Polar Front, Southern Antarctic Circumpolar Current Front}
+
+\item{frontcols}{colors for fronts
 
  @return
 Produces at the very base a round bathymetry map of the southern hemisphere.}

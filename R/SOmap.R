@@ -21,6 +21,8 @@
 #' Plot land boundary
 #' @param fronts
 #' Plot ocean fronts: Subantarctic Front, Polar Front, Southern Antarctic Circumpolar Current Front
+#' @param frontcols
+#' colors for fronts
 #'
 #'  @return
 #' Produces at the very base a round bathymetry map of the southern hemisphere.
