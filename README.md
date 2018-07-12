@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
-SOmap
-=====
+SOmap <img src="man/figures/logo.png" align="right" />
+======================================================
 
 The goal of SOmap is to make publication quality round Southern Ocean maps in polar projections with little effort.
 
