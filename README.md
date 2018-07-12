@@ -3,7 +3,7 @@
 SOmap <img src="man/figures/logo.png" align="right" />
 ======================================================
 
-The goal of SOmap is to make publication quality round Southern Ocean maps in polar projections with little effort.
+The goal of SOmap is to make publication quality round Southern Ocean maps in polar projections with little effort. This package is still very much a work in progress contact me with any questions.
 
 Installation
 ------------
@@ -25,7 +25,7 @@ SOmap::SOmap()
 #> Loading required namespace: rgeos
 ```
 
-<img src="man/figures/README-example-1.png" width="100%" />
+<img src="man/figures/README-examplemap-1.png" width="100%" />
 
     #> [1] "Congratulations, you did a thing!"
 
@@ -44,6 +44,6 @@ plot(ice, col=spirited, add=T,legend=FALSE, alpha=0.95) ## From raadtools
 SOmap::SOmanagement(EEZ = T)
 ```
 
-<img src="man/figures/README-pressure-1.png" width="100%" />
+<img src="man/figures/README-management-1.png" width="100%" />
 
     #> [1] "ooooh pretty!"

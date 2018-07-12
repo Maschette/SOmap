@@ -20,7 +20,7 @@ library(rgdal)
 ```
 # SOmap <img src="man/figures/logo.png" align="right" />
 
-The goal of SOmap is to make publication quality round Southern Ocean maps in polar projections with little effort. 
+The goal of SOmap is to make publication quality round Southern Ocean maps in polar projections with little effort. This package is still very much a work in progress contact me with any questions.
 
 ## Installation
 The development version from [GitHub](https://github.com/Maschette/SOmap) with:
@@ -33,13 +33,13 @@ devtools::install_github("Maschette/SOmap")
 
 To make a simple map you can use the following function; use ?SOmap to see all the options for modifying layers.
 
-```{r example, fig.height=7,fig.width=7}
+```{r examplemap, fig.height=5,fig.width=5, dpi=300}
 SOmap::SOmap()
 ```
 
 There is also SOmanagement() which have management layers for the Southern Ocean and SOleg() which gives custom rounded legends for added map layers
 
-```{r pressure, echo = T, fig.height=7,fig.width=7}
+```{r management, echo = T, fig.height=5,fig.width=5, dpi=300}
 SOmap::SOmap()
 SOleg(position="topright",
       col=spirited,
