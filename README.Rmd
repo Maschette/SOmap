@@ -1,0 +1,52 @@
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
+library(SOmap)
+library(raster)
+library(rgdal)
+ spiritedMedium <- grDevices::colorRampPalette(c("#4D4140", "#596F7E", "#168B98", "#ED5B67", "#E27766", "#DAAD50", "#EAC3A6"))
+ spirited<-spiritedMedium(80)
+ load("C:/Users/dale_mas/Documents/ice.rda")
+```
+# SOmap
+
+The goal of SOmap is to make publication quality round Southern Ocean maps in polar projections with little effort. 
+
+## Installation
+The development version from [GitHub](https://github.com/Maschette/SOmap) with:
+
+``` r
+# install.packages("devtools")
+devtools::install_github("Maschette/SOmap")
+```
+## Example
+
+To make a simple map you can use the following function; use ?SOmap to see all the options for modifying layers.
+
+```{r example, fig.height=10,fig.width=10}
+SOmap::SOmap()
+```
+
+There is also SOmanagement() which have management layers for the Southern Ocean and SOleg() which gives custom rounded legends for added map layers
+
+```{r pressure, echo = T, fig.height=10,fig.width=10}
+SOmap::SOmap()
+SOleg(position="topright",
+      col=spirited,
+      ticks=6,
+      tlabs = c("0","20","40","60","80","100"),
+      Trim=-45,
+      label="Sea Ice")
+plot(ice, col=spirited, add=T,legend=FALSE, alpha=0.95) ## From raadtools
+SOmap::SOmanagement(EEZ = T)
+```
