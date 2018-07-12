@@ -146,29 +146,41 @@ raster::plot(j, border=F,col="white", add=T) #White mask
 #
 #
 #
-# ##Testing SOleg
+##Testing SOleg
+# library(ghibli)
+# MononokeMedium <- grDevices::colorRampPalette(c("#05141E", "#762B19", "#3D507A", "#657062", "#D14E3E", "#E78A40", "#EBD799"))
+# mononoke<-MononokeMedium(80)
+#
+# totoroMedium <- grDevices::colorRampPalette(c("#1C1A1F", "#2D2A25", "#593B2D", "#534C53", "#42668D", "#AF8058", "#BCA78F"))
+# totoro<-totoroMedium(80)
+#
+# spiritedMedium <- grDevices::colorRampPalette(c("#4D4140", "#596F7E", "#168B98", "#ED5B67", "#E27766", "#DAAD50", "#EAC3A6"))
+# spirited<-spiritedMedium(80)
+
+
+#
 # png(paste(Dat.Dir,'/SOMAP_Layers_6.png', sep=''), width=22, height=20, units='cm', res=300)
 # SOmap::SOmap()
-# SOleg(position="topleft",
-#       col=heat.colors(80),
-#       ticks=4,
-#       tlabs = c("1","10","100","1000"),
-#       Trim=-45,
-#       label="Heat")
+# # #SOleg(position="topleft",
+# #       col=mononoke,
+# #       ticks=4,
+# #       tlabs = c("1","10","100","1000"),
+# #       Trim=-45,
+# #       label="Mononoke")
 #
 # SOleg(position="topright",
-#       col=terrain.colors(80),
-#       ticks=5,
-#       tlabs = c("1","10","100","1000","10000"),
-#       Trim=-45,
-#       label="Terrain")
-#
-# SOleg(position="bottomright",
-#       col=rainbow(80),
+#       col=spirited,
 #       ticks=6,
-#       tlabs = c("1","10","100","1000","10000","100000"),
+#       tlabs = c("0","20","40","60","80","100"),
 #       Trim=-45,
-#       label="rainbow")
+#       label="Sea Ice")
+# plot(ice, col=spirited, add=T,legend=FALSE, alpha=0.95)
+# # SOleg(position="bottomright",
+# #       col=totoro,
+# #       ticks=6,
+# #       tlabs = c("1","10","100","1000","10000","100000"),
+# #       Trim=-45,
+# #       label="Totoro")
 # SRT<--45
 # label="Bathymetry"
 # df3 <- data.frame(a = label,
