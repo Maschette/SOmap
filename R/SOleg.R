@@ -97,7 +97,7 @@ SOleg<-function(x,
   btick <- graticule::graticule(lats=c(Trim+4,Trim+7), lons = seq(95,175, by=80/(ticks-1)), proj=raster::projection(Bathy), tiles=F)
 
   k<-graticule::graticule(lons = seq(94,176, by=1),lats = c(Trim+10,Trim+6.75), tiles = TRUE, proj = raster::projection(Bathy))
-  j<-graticule::graticule(lons = seq(94,176, by=1),lats = c(Trim+15,Trim+2), tiles = TRUE, proj = raster::projection(Bathy))
+  j<-graticule::graticule(lons = seq(94,176, by=1),lats = c(Trim+15,Trim+2.1), tiles = TRUE, proj = raster::projection(Bathy))
   #Ticks
   df2 <- data.frame(a = tlabs,
                     lon = seq(95,175, by=80/(ticks-1)),
