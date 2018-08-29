@@ -1,8 +1,10 @@
 #' Default southern ocean map
 #'
 #' Provide minimal input information to get a default map. The simplest case is
-#' to input locations as `xs` and `ys` values, there must be at least two longitude
-#' and latitude values.
+#' to run the function without any inputs at all and it will provide a random default.
+#'
+#' To input your data, use input locations as `xs` (longitude) and `ys` (latitude) values, there must be at least
+#' two locations.
 #'
 #' Try families such as `laea`, `ortho`, `gnomonic` if feeling adventurous.
 #' @param xs,ys longitude and latitude values
@@ -31,6 +33,14 @@ default_somap <- function(xs, ys, centre_lon = NULL, centre_lat = NULL, family =
                           dimXY = c(300, 300),
                           bathy = TRUE, coast = TRUE, input_points = TRUE, input_lines = TRUE,
                           graticule = TRUE) {
+  if (missing(xs) && missing(ys)) {
+    xlim <- sort(runif(2, -180, 180))
+    ylim <- sort(runif(2, -89, 0))
+
+    if (diff(xlim) > 160) xlim[1] <- xlim[2] - 160
+    xs <- runif(30, xlim[1], xlim[2])
+    ys <- runif(30, ylim[1], ylim[2])
+  }
   xlim <- range(xs)
   ylim <- range(ys)
   if (is.null(centre_lon)) {
@@ -52,7 +62,7 @@ default_somap <- function(xs, ys, centre_lon = NULL, centre_lat = NULL, family =
   dim(target) <- dimXY
   bathymetry <- coastline <- NULL
   if (isTRUE(bathy)) {            ## insert your local bathy-getter here
-    ##topo <- raadtools::readtopo("etopo2")
+    if (!exists("topo")) topo <- aggregate(raadtools::readtopo("etopo2", xylim = extent(-180, 180, -90, 0)), fact = 10)
     bathymetry <- projectRaster(topo, target)
   } else {
     if (inherits(bathy, "BasicRaster")) {
