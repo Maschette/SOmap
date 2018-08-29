@@ -17,7 +17,10 @@
 #'
 #' @return the derived target extent in the map projection used, bathymetry, and coastline data
 #' @export
-#'
+#' @importFrom sf st_graticule st_as_sf
+#' @importFrom raster aggregate crop extent projectExtent projectRaster
+#' @importFrom rnaturalearth ne_coastline
+#' @importFrom rgdal project
 #' @examples
 #' default_somap(c(0, 50), c(-70, -50))
 #' default_somap(runif(10, 130, 200), runif(10, -80, -10))
@@ -29,6 +32,7 @@
 #' ibcso <- as_raster(lazyraster(raadtools::topofile("ibcso")), dim = c(2000, 2000))
 #' projection(ibcso) <- projection(raadtools::readtopo("ibcso"))
 #' default_somap(runif(10, 30, 160), runif(10, -75, -40), bathy = ibcso)
+#' }
 default_somap <- function(xs, ys, centre_lon = NULL, centre_lat = NULL, family = "stere",
                           dimXY = c(300, 300),
                           bathy = TRUE, coast = TRUE, input_points = TRUE, input_lines = TRUE,
@@ -62,11 +66,11 @@ default_somap <- function(xs, ys, centre_lon = NULL, centre_lat = NULL, family =
   dim(target) <- dimXY
   bathymetry <- coastline <- NULL
   if (isTRUE(bathy)) {            ## insert your local bathy-getter here
-    if (!exists("topo")) topo <- aggregate(raadtools::readtopo("etopo2", xylim = extent(-180, 180, -90, 0)), fact = 10)
-    bathymetry <- projectRaster(topo, target)
+    if (!exists("topo")) topo <- raster::aggregate(raadtools::readtopo("etopo2", xylim = extent(-180, 180, -90, 0)), fact = 10)
+    bathymetry <- raster::projectRaster(topo, target)
   } else {
     if (inherits(bathy, "BasicRaster")) {
-      bathymetry <- projectRaster(bathy[[1]], target, method = "ngb")
+      bathymetry <- raster::projectRaster(bathy[[1]], target, method = "ngb")
       bathy <- TRUE
     }
 
@@ -94,13 +98,37 @@ default_somap <- function(xs, ys, centre_lon = NULL, centre_lat = NULL, family =
   if (input_lines) lines(xy)
 
   if (graticule) {
-    p <- spex::spex(target)
-    rgdal::llgridlines(p, col = "grey")
+    print(target)
+    p <- sf::st_as_sf(spex::spex(target))
+    grat <- sf::st_graticule(p)
+    plot_graticule(grat)
+    #rgdal::llgridlines(p, col = "grey")
   }
   invisible(list(bathy = bathymetry, coastline = coastline, target = target))
 }
 
+## from ?sf::st_graticule
+plot_graticule <- function(g) {
+  plot(g[1], add = TRUE, col = 'grey')
+ # points(g$x_start, g$y_start, col = 'red')
+  #points(g$x_end, g$y_end, col = 'blue')
 
+  invisible(lapply(seq_len(nrow(g)), function(i) {
+    if (g$type[i] == "N" && g$x_start[i] - min(g$x_start) < 1000)
+      text(g[i,"x_start"], g[i,"y_start"], labels = parse(text = g[i,"degree_label"]),
+           srt = g$angle_start[i], pos = 2, cex = .7)
+    if (g$type[i] == "E" && g$y_start[i] - min(g$y_start) < 1000)
+      text(g[i,"x_start"], g[i,"y_start"], labels = parse(text = g[i,"degree_label"]),
+           srt = g$angle_start[i] - 90, pos = 1, cex = .7)
+    if (g$type[i] == "N" && g$x_end[i] - max(g$x_end) > -1000)
+      text(g[i,"x_end"], g[i,"y_end"], labels = parse(text = g[i,"degree_label"]),
+           srt = g$angle_end[i], pos = 4, cex = .7)
+    if (g$type[i] == "E" && g$y_end[i] - max(g$y_end) > -1000)
+      text(g[i,"x_end"], g[i,"y_end"], labels = parse(text = g[i,"degree_label"]),
+           srt = g$angle_end[i] - 90, pos = 3, cex = .7)
+  }))
+  invisible(NULL)
+}
 
 
 
