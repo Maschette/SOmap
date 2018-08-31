@@ -89,9 +89,11 @@ default_somap <- function(xs, ys, centre_lon = NULL, centre_lat = NULL, family =
     }
 
   }
+  ramp2<-grDevices::colorRampPalette(c("#54A3D1","#60B3EB","#78C8F0","#98D1F5","#B5DCFF","#BDE1F0","#CDEBFA","#D6EFFF","#EBFAFF","grey92","grey94","grey96", "white"))
+  bluepal<-ramp2(68)
 
   plot(c(xmin(target), xmax(target)), c(ymin(target), ymax(target)), type = "n", asp = 1, axes = FALSE, xlab = "", ylab = "")
-  if (bathy) plot(bathymetry, add = TRUE, col = grey(seq(0, 1, length = 40)))
+  if (bathy) plot(bathymetry, add = TRUE, col = bluepal)#grey(seq(0, 1, length = 40)))
   if (coast) plot(coastline, add = TRUE)
   if (input_points || input_lines) xy <- rgdal::project(cbind(xs, ys), prj)
   if (input_points) points(xy)
