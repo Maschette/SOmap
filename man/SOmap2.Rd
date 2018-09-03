@@ -4,15 +4,17 @@
 \alias{SOmap2}
 \title{Southern Ocean Map 2}
 \usage{
-SOmap2(Bathleg = TRUE, land = TRUE, CCAMLR = FALSE, CCAMLRlab = FALSE,
-  SSRU = FALSE, SSRUlab = FALSE, SSMU = FALSE, SSMUlab = FALSE,
-  RB = FALSE, RBlab = FALSE, SPRFMORB = FALSE, Border = TRUE,
-  Trim = -45, Grats = FALSE, EEZ = FALSE, EEZlab = FALSE, MPA = FALSE,
-  MPAlab = FALSE, IWC = FALSE, IWClab = FALSE, straight = FALSE,
-  fronts = FALSE, frontcols = c("hotpink", "orchid", "plum"), rbcol = 3,
+SOmap2(Bathleg = TRUE, land = TRUE, CCAMLR = FALSE,
+  CCAMLRlab = FALSE, SSRU = FALSE, SSRUlab = FALSE, SSMU = FALSE,
+  SSMUlab = FALSE, RB = FALSE, RBlab = FALSE, SPRFMORB = FALSE,
+  Border = TRUE, Trim = -45, Grats = FALSE, EEZ = FALSE,
+  EEZlab = FALSE, MPA = FALSE, MPAlab = FALSE, IWC = FALSE,
+  IWClab = FALSE, straight = FALSE, fronts = FALSE,
+  frontcols = c("hotpink", "orchid", "plum"), rbcol = 3,
   sprfmocol = "grey50", ccamlrcol = 2, ssrucol = "grey50",
   ssmucol = "grey70", eezcol = "maroon", mpacol = "yellow",
-  bordercol = c("white", "black"), gratcol = "grey70", iwccol = "blue")
+  bordercol = c("white", "black"), gratcol = "grey70",
+  iwccol = "blue")
 }
 \arguments{
 \item{Bathleg}{Insert the bathymetry legend.}
@@ -86,4 +88,11 @@ Produces at the very base a round bathymetry map of the southern hemisphere.
 }
 \description{
 Function for creating round Southern Ocean maps with inbuild base layers.
+}
+\examples{
+Dat.Dir<-getwd()
+png(paste(Dat.Dir,'/SOmap.png', sep=''), width=22, height=20, units='cm', res=600)
+SOmap(CCAMLRlab= F,CCAMLR=T, ccamlrcol = 1, Trim=-45)
+dev.off()
+
 }
