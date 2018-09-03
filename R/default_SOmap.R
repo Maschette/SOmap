@@ -97,22 +97,27 @@ default_somap <- function(xs, ys, centre_lon = NULL, centre_lat = NULL, family =
   #breaks=bk,
 
 #  plot(c(xmin(target), xmax(target)), c(ymin(target), ymax(target)), type = "n", asp = 1, axes = FALSE, xlab = "", ylab = "")
-  if (bathy) plot(bathymetry, add = FALSE, col = bluepal, axes = FALSE, box=FALSE)#grey(seq(0, 1, length = 40)))
+  pp <- aspectplot.default(c(xmin(bathymetry), xmax(bathymetry)), c(ymin(bathymetry), ymax(bathymetry)), asp = 1)
+  if (bathy) image(bathymetry, add = FALSE, col = bluepal, axes = FALSE)#grey(seq(0, 1, length = 40)))
+  box()
+
   if (contours) contour(bathymetry, nlevels=1, levels=c(lvs), col="black", add= addcont)
-  op <- par(xpd = FALSE,xaxs="i",yaxs="i")
+  #op <- par(xpd = FALSE,xaxs="i",yaxs="i")
   if (coast) plot(coastline, add = TRUE)
-  par(op)
+  #par(op)
   if (input_points || input_lines) xy <- rgdal::project(cbind(xs, ys), prj)
   if (input_points) points(xy)
   if (input_lines) lines(xy)
 
   if (graticule) {
-    print(target)
-    p <- sf::st_as_sf(spex::spex(target))
+    #print(target)
+    p <- sf::st_as_sf(spex::spex(crs = projection(target)))
+
     grat <- sf::st_graticule(p)
     plot_graticule(grat)
     #rgdal::llgridlines(p, col = "grey")
   }
+  par(pp)
   invisible(list(bathy = bathymetry, coastline = coastline, target = target))
 }
 
@@ -140,6 +145,28 @@ plot_graticule <- function(g) {
 }
 
 
+aspectplot.default <- function(xlim,ylim,asp, ...) {
+  plot.new()
+  #plot.window(xlim=xlim,ylim=ylim,xaxs="i",yaxs="i")
+  asp <- 1
+  r <- abs(diff(ylim)/diff(xlim))
+  print(r)
 
+  if(r > 1) {
+    recip <- 1/(2 * r)
+    figure <- c(0.5 - recip, 0.5 + recip,
+                0, 1)
+  } else {
+    recip <- r/2
+    figure <- c(0, 1,
+                0.5 - recip, 0.5 + recip)
+  }
+  print(cbind(xlim, ylim, asp))
+  print(figure)
+  p <- par(fig = figure, new = TRUE)
+
+  plot.window(xlim=xlim,ylim=ylim,xaxs="i",yaxs="i", asp = asp)
+  return(p)
+}
 
 
