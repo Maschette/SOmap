@@ -27,12 +27,6 @@
 #' default_somap(runif(10, 130, 200), runif(10, -85, -60))
 #' ## save the result to explore later!
 #' protomap <- default_somap(runif(10, 60, 160), runif(10, -73, -50), coast = rnaturalearth::ne_coastline())
-#' \dontrun{
-#' library(lazyraster)
-#' ibcso <- as_raster(lazyraster(raadtools::topofile("ibcso")), dim = c(2000, 2000))
-#' projection(ibcso) <- projection(raadtools::readtopo("ibcso"))
-#' default_somap(runif(10, 30, 160), runif(10, -75, -40), bathy = ibcso)
-#' }
 default_somap <- function(xs, ys, centre_lon = NULL, centre_lat = NULL, family = "stere",
                           dimXY = c(300, 300),
                           bathy = TRUE, coast = TRUE, input_points = TRUE, input_lines = TRUE,
@@ -63,11 +57,14 @@ default_somap <- function(xs, ys, centre_lon = NULL, centre_lat = NULL, family =
 
   target <- raster::projectExtent(raster::raster(extent(xlim, ylim), crs = "+init=epsg:4326"),
                                   prj)
+  ## do we need to expand xlim/ylim from this target?
+  ## obtain vertical xlim and horizontal ylim from
+
   dim(target) <- dimXY
   bathymetry <- coastline <- NULL
   if (isTRUE(bathy)) {            ## insert your local bathy-getter here
-    if (!exists("topo")) topo <- raster::aggregate(raadtools::readtopo("etopo2", xylim = extent(-180, 180, -90, 0)), fact = 10)
-    bathymetry <- raster::projectRaster(topo, target)
+    ##if (!exists("topo")) topo <- raster::aggregate(raadtools::readtopo("etopo2", xylim = extent(-180, 180, -90, 0)), fact = 10)
+    bathymetry <- raster::projectRaster(Bathy, target)
   } else {
     if (inherits(bathy, "BasicRaster")) {
       bathymetry <- raster::projectRaster(bathy[[1]], target, method = "ngb")
@@ -78,10 +75,11 @@ default_somap <- function(xs, ys, centre_lon = NULL, centre_lat = NULL, family =
 
   if (isTRUE(coast)) {
     ## insert your local coastline getter here
-    data("wrld_simpl", package = "maptools")
-    coastline <- as(wrld_simpl, "SpatialLinesDataFrame")
+   # data("wrld_simpl", package = "maptools")
+   #coastline <- as(wrld_simpl, "SpatialLinesDataFrame")
 
-    coastline <- raster::crop(sp::spTransform(coastline, prj), extent(target))
+    #coastline <- raster::crop(as(sp::spTransform(land1, prj), "SpatialLinesDataFrame") , extent(target))
+    coastline <- sp::spTransform(land1, prj)
   } else {
     if (inherits(coast, "Spatial")) {
       coastline <- sp::spTransform(coast, prj)
@@ -92,9 +90,12 @@ default_somap <- function(xs, ys, centre_lon = NULL, centre_lat = NULL, family =
   ramp2<-grDevices::colorRampPalette(c("#54A3D1","#60B3EB","#78C8F0","#98D1F5","#B5DCFF","#BDE1F0","#CDEBFA","#D6EFFF","#EBFAFF","grey92","grey94","grey96", "white"))
   bluepal<-ramp2(68)
 
-  plot(c(xmin(target), xmax(target)), c(ymin(target), ymax(target)), type = "n", asp = 1, axes = FALSE, xlab = "", ylab = "")
-  if (bathy) plot(bathymetry, add = TRUE, col = bluepal)#grey(seq(0, 1, length = 40)))
+#  plot(c(xmin(target), xmax(target)), c(ymin(target), ymax(target)), type = "n", asp = 1, axes = FALSE, xlab = "", ylab = "")
+  if (bathy) plot(bathymetry, add = FALSE, col = bluepal, axes = FALSE)#grey(seq(0, 1, length = 40)))
+ # box(col = "white")
+  op <- par(xpd = FALSE)
   if (coast) plot(coastline, add = TRUE)
+  par(op)
   if (input_points || input_lines) xy <- rgdal::project(cbind(xs, ys), prj)
   if (input_points) points(xy)
   if (input_lines) lines(xy)
