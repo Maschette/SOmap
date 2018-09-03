@@ -94,7 +94,15 @@ default_somap <- function(xs, ys, centre_lon = NULL, centre_lat = NULL, family =
   ramp2<-grDevices::colorRampPalette(c("#54A3D1","#60B3EB","#78C8F0","#98D1F5","#B5DCFF","#BDE1F0","#CDEBFA","#D6EFFF","#EBFAFF","grey92","grey94","grey96", "white"))
   bluepal<-ramp2(45)
   #bk<-c(-10353,-8000,-5000,-4000,-3000,-2000,-1500,-1000,-500,-1,0,1500, 5850)
-  #breaks=bk,
+
+  # if (croptograt){
+  # poly <- as(extent(target), "SpatialPolygons")
+  # projection(poly) <- projection(target)
+  # g <- graticule(xlim, ylim, proj = projection(target),nverts=10, tiles=TRUE)}
+
+
+
+
 
 #  plot(c(xmin(target), xmax(target)), c(ymin(target), ymax(target)), type = "n", asp = 1, axes = FALSE, xlab = "", ylab = "")
   if (bathy) plot(bathymetry, add = FALSE, col = bluepal, axes = FALSE, box=FALSE)#grey(seq(0, 1, length = 40)))
@@ -113,7 +121,10 @@ default_somap <- function(xs, ys, centre_lon = NULL, centre_lat = NULL, family =
     plot_graticule(grat)
     #rgdal::llgridlines(p, col = "grey")
   }
-  invisible(list(bathy = bathymetry, coastline = coastline, target = target))
+  # if (croptograt){
+  # plot(erase(poly, g), add = TRUE, col = "white")
+  # invisible(list(bathy = bathymetry, coastline = coastline, target = target))
+  # }
 }
 
 ## from ?sf::st_graticule
