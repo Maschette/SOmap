@@ -41,13 +41,24 @@ default_somap <- function(xs, ys, centre_lon = NULL, centre_lat = NULL, family =
                           bathy = TRUE, coast = TRUE, input_points = TRUE, input_lines = TRUE,
                           graticule = TRUE, buffer=0.05,
                           contours=TRUE, lvs=c(-500, -1000, -2000)) {
-  if (missing(xs) && missing(ys)) {
+  if (missing(xs) || missing(ys)) {
     xlim <- sort(runif(2, -180, 180))
     ylim <- sort(runif(2, -89, -20))
 
-    if (diff(xlim) > 160) xlim[1] <- xlim[2] - 160
     xs <- runif(30, xlim[1], xlim[2])
     ys <- runif(30, ylim[1], ylim[2])
+    xy <- cbind(xs, ys)
+    xy <- xy[order(xy[, 1], xy[,2]), ]
+    xs <- xy[,1]
+    ys <- xy[,2]
+    # xy <- geosphere::randomCoordinates(600)
+    # xy <- xy[xy[,2] < -20, ]
+    # xy <- xy[sample(nrow(xy), 30, replace = nrow(xy) < 30), ]
+    # xy <- xy[order(xy[, 1], xy[,2]), ]
+    # xs <- xy[,1]
+    # ys <- xy[,2]
+
+
   }
   xs <- na.omit(xs)
   ys <- na.omit(ys)
