@@ -30,7 +30,7 @@
 default_somap <- function(xs, ys, centre_lon = NULL, centre_lat = NULL, family = "stere",
                           dimXY = c(300, 300),
                           bathy = TRUE, coast = TRUE, input_points = TRUE, input_lines = TRUE,
-                          graticule = TRUE) {
+                          graticule = TRUE, buffer=0.05) {
   if (missing(xs) && missing(ys)) {
     xlim <- sort(runif(2, -180, 180))
     ylim <- sort(runif(2, -89, 0))
@@ -39,8 +39,8 @@ default_somap <- function(xs, ys, centre_lon = NULL, centre_lat = NULL, family =
     xs <- runif(30, xlim[1], xlim[2])
     ys <- runif(30, ylim[1], ylim[2])
   }
-  xlim <- range(xs)
-  ylim <- range(ys)
+  xlim <- range(xs) + c(-buffer, buffer)
+  ylim <- range(ys) + c(-buffer, buffer)
   if (is.null(centre_lon)) {
     centre_lon <- mean(xlim)
   }
