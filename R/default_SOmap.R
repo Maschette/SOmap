@@ -30,7 +30,8 @@
 default_somap <- function(xs, ys, centre_lon = NULL, centre_lat = NULL, family = "stere",
                           dimXY = c(300, 300),
                           bathy = TRUE, coast = TRUE, input_points = TRUE, input_lines = TRUE,
-                          graticule = TRUE, buffer=0.05) {
+                          graticule = TRUE, buffer=0.05,
+                          contours=TRUE, lvs=c(-500, -1000, -2000), addcont=TRUE) {
   if (missing(xs) && missing(ys)) {
     xlim <- sort(runif(2, -180, 180))
     ylim <- sort(runif(2, -89, -20))
@@ -97,6 +98,7 @@ default_somap <- function(xs, ys, centre_lon = NULL, centre_lat = NULL, family =
 
 #  plot(c(xmin(target), xmax(target)), c(ymin(target), ymax(target)), type = "n", asp = 1, axes = FALSE, xlab = "", ylab = "")
   if (bathy) plot(bathymetry, add = FALSE, col = bluepal, axes = FALSE, box=FALSE)#grey(seq(0, 1, length = 40)))
+  if (contours) contour(bathymetry, nlevels=1, levels=c(lvs), col="black", add= addcont)
   op <- par(xpd = FALSE,xaxs="i",yaxs="i")
   if (coast) plot(coastline, add = TRUE)
   par(op)
