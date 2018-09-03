@@ -33,7 +33,7 @@ default_somap <- function(xs, ys, centre_lon = NULL, centre_lat = NULL, family =
                           graticule = TRUE, buffer=0.05) {
   if (missing(xs) && missing(ys)) {
     xlim <- sort(runif(2, -180, 180))
-    ylim <- sort(runif(2, -89, 0))
+    ylim <- sort(runif(2, -89, -20))
 
     if (diff(xlim) > 160) xlim[1] <- xlim[2] - 160
     xs <- runif(30, xlim[1], xlim[2])
@@ -41,6 +41,9 @@ default_somap <- function(xs, ys, centre_lon = NULL, centre_lat = NULL, family =
   }
   xlim <- range(xs) + c(-buffer, buffer)
   ylim <- range(ys) + c(-buffer, buffer)
+    if (ylim[1] < -90) {ylim[1] <- -90}
+    if (ylim[2] > 0) {ylim[2] <- 0}
+
   if (is.null(centre_lon)) {
     centre_lon <- mean(xlim)
   }
@@ -88,12 +91,13 @@ default_somap <- function(xs, ys, centre_lon = NULL, centre_lat = NULL, family =
 
   }
   ramp2<-grDevices::colorRampPalette(c("#54A3D1","#60B3EB","#78C8F0","#98D1F5","#B5DCFF","#BDE1F0","#CDEBFA","#D6EFFF","#EBFAFF","grey92","grey94","grey96", "white"))
-  bluepal<-ramp2(68)
+  bluepal<-ramp2(45)
+  #bk<-c(-10353,-8000,-5000,-4000,-3000,-2000,-1500,-1000,-500,-1,0,1500, 5850)
+  #breaks=bk,
 
 #  plot(c(xmin(target), xmax(target)), c(ymin(target), ymax(target)), type = "n", asp = 1, axes = FALSE, xlab = "", ylab = "")
-  if (bathy) plot(bathymetry, add = FALSE, col = bluepal, axes = FALSE)#grey(seq(0, 1, length = 40)))
- # box(col = "white")
-  op <- par(xpd = FALSE)
+  if (bathy) plot(bathymetry, add = FALSE, col = bluepal, axes = FALSE, box=FALSE)#grey(seq(0, 1, length = 40)))
+  op <- par(xpd = FALSE,xaxs="i",yaxs="i")
   if (coast) plot(coastline, add = TRUE)
   par(op)
   if (input_points || input_lines) xy <- rgdal::project(cbind(xs, ys), prj)
