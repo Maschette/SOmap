@@ -35,6 +35,7 @@
 #' default_somap(runif(10, 130, 200), runif(10, -85, -60))
 #' ## save the result to explore later!
 #' protomap <- default_somap(runif(10, 60, 160), runif(10, -73, -50))
+#' default_somap(coast = CCAMLR1, trim_background = FALSE)
 default_somap <- function(xs, ys, centre_lon = NULL, centre_lat = NULL, family = "stere",
                           expand = TRUE,
                           dimXY = c(300, 300),
@@ -43,7 +44,7 @@ default_somap <- function(xs, ys, centre_lon = NULL, centre_lat = NULL, family =
                           contours=TRUE, lvs=c(-500, -1000, -2000),
                           trim_background = TRUE) {
   if (missing(xs) || missing(ys)) {
-    xlim <- sort(runif(2, -180, 180))
+    xlim <- sort(runif(2, -359, 359))
     ylim <- sort(runif(2, -89, -20))
 
     xs <- runif(30, xlim[1], xlim[2])
@@ -52,14 +53,6 @@ default_somap <- function(xs, ys, centre_lon = NULL, centre_lat = NULL, family =
     xy <- xy[order(xy[, 1], xy[,2]), ]
     xs <- xy[,1]
     ys <- xy[,2]
-    # xy <- geosphere::randomCoordinates(600)
-    # xy <- xy[xy[,2] < -20, ]
-    # xy <- xy[sample(nrow(xy), 30, replace = nrow(xy) < 30), ]
-    # xy <- xy[order(xy[, 1], xy[,2]), ]
-    # xs <- xy[,1]
-    # ys <- xy[,2]
-
-
   }
   xs <- na.omit(xs)
   ys <- na.omit(ys)
@@ -68,8 +61,8 @@ default_somap <- function(xs, ys, centre_lon = NULL, centre_lat = NULL, family =
 
   xlim <- range(xs)
   ylim <- range(ys)
-    if (ylim[1] < -90) {ylim[1] <- -90}
-    if (ylim[2] > 0) {ylim[2] <- 0}
+  if (ylim[1] < -90) {ylim[1] <- -90}
+  if (ylim[2] > 0) {ylim[2] <- 0}
 
   if (is.null(centre_lon)) {
     centre_lon <- mean(xlim)
@@ -97,15 +90,9 @@ default_somap <- function(xs, ys, centre_lon = NULL, centre_lat = NULL, family =
   xxlim <- xxlim + diff(range(xxlim)) * c(-buffer, buffer)
   yylim <- c(ymin(target), ymax(target))
   yylim <- yylim + diff(range(yylim)) * c(-buffer, buffer)
- # print("xxlim")
-#  print(xxlim)
-#  print(yylim)
- target <- extend(target, extent(xxlim, yylim))
-  ## do we need to expand xlim/ylim from this target?
-  ## obtain vertical xlim and horizontal ylim from
+  target <- extend(target, extent(xxlim, yylim))
   if (expand) {
     centre_line <- rgdal::project(cbind(centre_lon, centre_lat), prj)
-
     ## we need the largest of the difference from centre to target boundary
     xhalf <- max(abs(centre_line[1] - c(xmin(target), xmax(target))))
     yhalf <- max(abs(centre_line[2] - c(ymin(target), ymax(target))))
@@ -114,36 +101,35 @@ default_somap <- function(xs, ys, centre_lon = NULL, centre_lat = NULL, family =
 
     target <- extend(target, extent(exp_xlim[1], exp_xlim[2], exp_ylim[1], exp_ylim[2]))
   }
-
- aspect <- if (raster::isLonLat(target)) 1/cos(mean(c(xmin(target), xmax(target))) * pi/180) else 1
- pp <- aspectplot.default(c(xmin(target), xmax(target)), c(ymin(target), ymax(target)), asp = aspect)
- newextent <- raster::extent(par("usr"))
- target <- extend(target, extent(newextent))
- dim(target) <- dimXY
+  dim(target) <- dimXY
   bathymetry <- coastline <- NULL
   if (isTRUE(bathy)) {            ## insert your local bathy-getter here
     ##if (!exists("topo")) topo <- raster::aggregate(raadtools::readtopo("etopo2", xylim = extent(-180, 180, -90, 0)), fact = 10)
     bathymetry <- raster::projectRaster(Bathy, target)
+    if (trim_background) {
+      bathymetry <- raster::trim(bathymetry)
+      target <- crop(target, bathymetry)
+    }
   } else {
     if (inherits(bathy, "BasicRaster")) {
       bathymetry <- raster::projectRaster(bathy[[1]], target, method = "ngb")
       bathy <- TRUE
       if (trim_background) {
-        bathymetry <- raster::trim(bathy)
+        bathymetry <- raster::trim(bathymetry)
         target <- crop(target, bathymetry)
       }
     }
 
   }
-  par(pp)
-  pp <- aspectplot.default(c(xmin(target), xmax(target)), c(ymin(target), ymax(target)), asp = aspect)
+  # par(pp)
+  aspect <- if (raster::isLonLat(target)) 1/cos(mean(c(xmin(target), xmax(target))) * pi/180) else 1
+  pp <- aspectplot.default(c(xmin(target), xmax(target)), c(ymin(target), ymax(target)), asp = aspect, mar = par("mar")/2.5)
   newextent <- raster::extent(par("usr"))
 
   if (isTRUE(coast)) {
-   suppressWarnings({
-    coastline <- as(sf::st_crop(sf::st_buffer(sf::st_transform(sf::st_as_sf(land1), prj), 0), xmin = xmin(target), xmax = xmax(target), ymin = ymin(target), ymax = ymax(target)), "Spatial")
+    suppressWarnings({
+      coastline <- as(sf::st_crop(sf::st_buffer(sf::st_transform(sf::st_as_sf(land1), prj), 0), xmin = xmin(target), xmax = xmax(target), ymin = ymin(target), ymax = ymax(target)), "Spatial")
     })
-    #coastline <- sp::spTransform(land1, prj)
   } else {
     if (inherits(coast, "Spatial")) {
       coastline <- sp::spTransform(coast, prj)
@@ -160,12 +146,6 @@ default_somap <- function(xs, ys, centre_lon = NULL, centre_lat = NULL, family =
   # projection(poly) <- projection(target)
   # g <- graticule(xlim, ylim, proj = projection(target),nverts=10, tiles=TRUE)}
 
-
-
-
-
-#  plot(c(xmin(target), xmax(target)), c(ymin(target), ymax(target)), type = "n", asp = 1, axes = FALSE, xlab = "", ylab = "")
-
   if (bathy) image(bathymetry, add = TRUE, col = bluepal, axes = FALSE)#grey(seq(0, 1, length = 40)))
 
   if (contours) contour(bathymetry, nlevels=1, levels=c(lvs), col="black", add= TRUE)
@@ -177,32 +157,27 @@ default_somap <- function(xs, ys, centre_lon = NULL, centre_lat = NULL, family =
   if (input_lines) lines(xy)
 
   if (graticule) {
-    #print(target)
-    print(par("usr"))
-    print(extent(target))
-    #p <- sf::st_as_sf(c(xmin(target), ymin(target), xmax(target), ymax(target)), crs = projection(target))
-
     grat <- sf::st_graticule(c(xmin(target), ymin(target), xmax(target), ymax(target)), crs = projection(target))
     op <- par(xpd = NA)
     plot_graticule(grat)
     par(op)
-    #rgdal::llgridlines(p, col = "grey")
   }
 
   par(pp)
-  invisible(list(bathy = bathymetry, coastline = coastline, target = target))
-
   # if (croptograt){
   # plot(erase(poly, g), add = TRUE, col = "white")
   # invisible(list(bathy = bathymetry, coastline = coastline, target = target))
-  # }
+  # } else {
 
+  invisible(list(bathy = bathymetry, coastline = coastline, target = target))
+
+  #}
 }
 
 ## from ?sf::st_graticule
 plot_graticule <- function(g) {
   plot(sf::st_geometry(g), add = TRUE, col = 'grey')
- # points(g$x_start, g$y_start, col = 'red')
+  # points(g$x_start, g$y_start, col = 'red')
   #points(g$x_end, g$y_end, col = 'blue')
 
   invisible(lapply(seq_len(nrow(g)), function(i) {
@@ -225,12 +200,9 @@ plot_graticule <- function(g) {
 
 aspectplot.default <- function(xlim,ylim,asp, ...) {
   plot.new()
-  #plot.window(xlim=xlim,ylim=ylim,xaxs="i",yaxs="i")
   xlim <- sort(xlim)
   ylim <- sort(ylim)
   r <- asp * abs(diff(ylim)/diff(xlim))
-  #print(r)
-
   if(r <= 1) {  # X = 0, 1
     recip <- r / 2
     figure <- c(0, 1,
@@ -240,11 +212,8 @@ aspectplot.default <- function(xlim,ylim,asp, ...) {
     figure <- c(0.5 - recip, 0.5 + recip,
                 0, 1)
   }
- # print(cbind(xlim, ylim, asp))
-  #print(figure)
- # print(recip)
-  p <- par(fig = figure, new = FALSE)
 
+  p <- par(fig = figure, new = FALSE, ...)
   plot.window(xlim=xlim,ylim=ylim,xaxs="i",yaxs="i", asp = asp)
   return(p)
 }

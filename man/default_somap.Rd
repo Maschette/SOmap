@@ -61,4 +61,5 @@ default_somap(runif(10, 130, 200), runif(10, -80, -10))
 default_somap(runif(10, 130, 200), runif(10, -85, -60))
 ## save the result to explore later!
 protomap <- default_somap(runif(10, 60, 160), runif(10, -73, -50))
+default_somap(coast = CCAMLR1, trim_background = FALSE)
 }
