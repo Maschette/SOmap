@@ -84,38 +84,38 @@ default_somap <- function(xs, ys, centre_lon = NULL, centre_lat = NULL, family =
   }
   prj <- sprintf(template, family, centre_lon, centre_lat)
 
+
   target <- raster::projectExtent(raster::raster(extent(xlim, ylim), crs = "+init=epsg:4326"),
                                   prj)
+  dim(target) <- dimXY
   ## extend projected bounds by the buffer
   xxlim <- c(xmin(target), xmax(target))
   xxlim <- xxlim + diff(range(xxlim)) * c(-buffer, buffer)
   yylim <- c(ymin(target), ymax(target))
   yylim <- yylim + diff(range(yylim)) * c(-buffer, buffer)
+ # print("xxlim")
+#  print(xxlim)
+#  print(yylim)
  target <- extend(target, extent(xxlim, yylim))
   ## do we need to expand xlim/ylim from this target?
   ## obtain vertical xlim and horizontal ylim from
   if (expand) {
     centre_line <- rgdal::project(cbind(centre_lon, centre_lat), prj)
-    centre_target <- c(mean(c(xmin(target), xmax(target))),
-                       mean(c(ymin(target), ymax(target))))
-    if (centre_line[1] < xmin(target)) {
-      wr <- xmax(target) - centre_line[1]
-      exp_xlim <- xmax(target) + c(-2 * wr, 0)
-    } else {
-      wr <- centre_line[1] - xmin(target)
-      exp_xlim <- xmin(target) + c(0, 2 * wr)
-    }
-    if (centre_line[2] < ymin(target)) {
-      hr <- ymax(target) - centre_line[2]
-      exp_ylim <- ymax(target) + c(-2 * hr, 0)
-    } else {
-      hr <- centre_line[2] - ymin(target)
-      exp_ylim <- ymin(target) + c(0, 2 * hr)
-    }
+
+    ## we need the largest of the difference from centre to target boundary
+    xhalf <- max(abs(centre_line[1] - c(xmin(target), xmax(target))))
+    yhalf <- max(abs(centre_line[2] - c(ymin(target), ymax(target))))
+    exp_xlim <- centre_line[1] + c(-xhalf, xhalf)
+    exp_ylim <- centre_line[2] + c(-yhalf, yhalf)
+
     target <- extend(target, extent(exp_xlim[1], exp_xlim[2], exp_ylim[1], exp_ylim[2]))
   }
 
-  dim(target) <- dimXY
+ aspect <- if (raster::isLonLat(target)) 1/cos(mean(c(xmin(target), xmax(target))) * pi/180) else 1
+ pp <- aspectplot.default(c(xmin(target), xmax(target)), c(ymin(target), ymax(target)), asp = aspect)
+ newextent <- raster::extent(par("usr"))
+ target <- extend(target, extent(newextent))
+ dim(target) <- dimXY
   bathymetry <- coastline <- NULL
   if (isTRUE(bathy)) {            ## insert your local bathy-getter here
     ##if (!exists("topo")) topo <- raster::aggregate(raadtools::readtopo("etopo2", xylim = extent(-180, 180, -90, 0)), fact = 10)
@@ -129,12 +129,10 @@ default_somap <- function(xs, ys, centre_lon = NULL, centre_lat = NULL, family =
   }
 
   if (isTRUE(coast)) {
-    ## insert your local coastline getter here
-   # data("wrld_simpl", package = "maptools")
-   #coastline <- as(wrld_simpl, "SpatialLinesDataFrame")
-
-    #coastline <- raster::crop(as(sp::spTransform(land1, prj), "SpatialLinesDataFrame") , extent(target))
-    coastline <- sp::spTransform(land1, prj)
+   suppressWarnings({
+    coastline <- as(sf::st_crop(sf::st_buffer(sf::st_transform(sf::st_as_sf(land1), prj), 0), xmin = xmin(target), xmax = xmax(target), ymin = ymin(target), ymax = ymax(target)), "Spatial")
+    })
+    #coastline <- sp::spTransform(land1, prj)
   } else {
     if (inherits(coast, "Spatial")) {
       coastline <- sp::spTransform(coast, prj)
@@ -148,7 +146,7 @@ default_somap <- function(xs, ys, centre_lon = NULL, centre_lat = NULL, family =
   #breaks=bk,
 
 #  plot(c(xmin(target), xmax(target)), c(ymin(target), ymax(target)), type = "n", asp = 1, axes = FALSE, xlab = "", ylab = "")
-  pp <- aspectplot.default(c(xmin(target), xmax(target)), c(ymin(target), ymax(target)), asp = 1)
+
   if (bathy) image(bathymetry, add = TRUE, col = bluepal, axes = FALSE)#grey(seq(0, 1, length = 40)))
 
   if (contours) contour(bathymetry, nlevels=1, levels=c(lvs), col="black", add= TRUE)
@@ -161,9 +159,11 @@ default_somap <- function(xs, ys, centre_lon = NULL, centre_lat = NULL, family =
 
   if (graticule) {
     #print(target)
-    p <- sf::st_as_sf(spex::spex(crs = projection(target)))
+    print(par("usr"))
+    print(extent(target))
+    #p <- sf::st_as_sf(c(xmin(target), ymin(target), xmax(target), ymax(target)), crs = projection(target))
 
-    grat <- sf::st_graticule(p)
+    grat <- sf::st_graticule(c(xmin(target), ymin(target), xmax(target), ymax(target)), crs = projection(target))
     op <- par(xpd = NA)
     plot_graticule(grat)
     par(op)
@@ -200,22 +200,24 @@ plot_graticule <- function(g) {
 aspectplot.default <- function(xlim,ylim,asp, ...) {
   plot.new()
   #plot.window(xlim=xlim,ylim=ylim,xaxs="i",yaxs="i")
-  asp <- 1
-  r <- abs(diff(ylim)/diff(xlim))
-  print(r)
+  xlim <- sort(xlim)
+  ylim <- sort(ylim)
+  r <- asp * abs(diff(ylim)/diff(xlim))
+  #print(r)
 
-  if(r > 1) {
-    recip <- 1/(2 * r)
-    figure <- c(0.5 - recip, 0.5 + recip,
-                0, 1)
-  } else {
-    recip <- r/2
+  if(r <= 1) {  # X = 0, 1
+    recip <- r / 2
     figure <- c(0, 1,
                 0.5 - recip, 0.5 + recip)
+  } else {     # Y = 0, 1
+    recip <- (1/r) / 2
+    figure <- c(0.5 - recip, 0.5 + recip,
+                0, 1)
   }
-  print(cbind(xlim, ylim, asp))
-  print(figure)
-  p <- par(fig = figure, new = TRUE)
+ # print(cbind(xlim, ylim, asp))
+  #print(figure)
+ # print(recip)
+  p <- par(fig = figure, new = FALSE)
 
   plot.window(xlim=xlim,ylim=ylim,xaxs="i",yaxs="i", asp = asp)
   return(p)
