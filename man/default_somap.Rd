@@ -8,7 +8,8 @@ default_somap(xs, ys, centre_lon = NULL, centre_lat = NULL,
   family = "stere", expand = TRUE, dimXY = c(300, 300),
   bathy = TRUE, coast = TRUE, input_points = TRUE,
   input_lines = TRUE, graticule = TRUE, buffer = 0.05,
-  contours = TRUE, lvs = c(-500, -1000, -2000))
+  contours = TRUE, lvs = c(-500, -1000, -2000),
+  trim_background = TRUE)
 }
 \arguments{
 \item{xs}{optional input data longitudes}

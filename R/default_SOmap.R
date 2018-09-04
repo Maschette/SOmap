@@ -40,7 +40,8 @@ default_somap <- function(xs, ys, centre_lon = NULL, centre_lat = NULL, family =
                           dimXY = c(300, 300),
                           bathy = TRUE, coast = TRUE, input_points = TRUE, input_lines = TRUE,
                           graticule = TRUE, buffer=0.05,
-                          contours=TRUE, lvs=c(-500, -1000, -2000)) {
+                          contours=TRUE, lvs=c(-500, -1000, -2000),
+                          trim_background = TRUE) {
   if (missing(xs) || missing(ys)) {
     xlim <- sort(runif(2, -180, 180))
     ylim <- sort(runif(2, -89, -20))
@@ -81,6 +82,9 @@ default_somap <- function(xs, ys, centre_lon = NULL, centre_lat = NULL, family =
   if (family == "stere") {
     ## won't generalize to northern hemisphere
     template <- "+proj=%s +lon_0=%f +lat_0=%f +lat_ts=-71 +datum=WGS84"
+  }
+  if (family == "lcc") {
+    template <- paste("+proj=%s +lon_0=%f +lat_0=%f +datum=WGS84", sprintf("+lat_0=%f +lat_1=%f", ylim[1], ylim[2]))
   }
   prj <- sprintf(template, family, centre_lon, centre_lat)
 
@@ -124,9 +128,16 @@ default_somap <- function(xs, ys, centre_lon = NULL, centre_lat = NULL, family =
     if (inherits(bathy, "BasicRaster")) {
       bathymetry <- raster::projectRaster(bathy[[1]], target, method = "ngb")
       bathy <- TRUE
+      if (trim_background) {
+        bathymetry <- raster::trim(bathy)
+        target <- crop(target, bathymetry)
+      }
     }
 
   }
+  par(pp)
+  pp <- aspectplot.default(c(xmin(target), xmax(target)), c(ymin(target), ymax(target)), asp = aspect)
+  newextent <- raster::extent(par("usr"))
 
   if (isTRUE(coast)) {
    suppressWarnings({
