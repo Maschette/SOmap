@@ -10,8 +10,8 @@ SOmanagement(CCAMLR = FALSE, CCAMLRlab = FALSE, SSRU = FALSE,
   EEZ = FALSE, EEZlab = FALSE, MPA = FALSE, MPAlab = FALSE,
   IWC = FALSE, IWClab = FALSE, rbcol = 3, sprfmocol = "grey50",
   ccamlrcol = 2, ssrucol = "grey50", ssmucol = "grey70",
-  eezcol = "maroon", mpacol = "yellow", bordercol = c("white", "black"),
-  gratcol = "grey70", iwccol = "blue")
+  eezcol = "maroon", mpacol = "yellow", bordercol = c("white",
+  "black"), gratcol = "grey70", iwccol = "blue")
 }
 \arguments{
 \item{CCAMLR}{Insert the CCAMLR boundaries.}
