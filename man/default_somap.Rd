@@ -41,6 +41,8 @@ default_somap(xs, ys, centre_lon = NULL, centre_lat = NULL,
 \item{contours}{add contours}
 
 \item{lvs}{contour levels if `contours = TRUE`}
+
+\item{trim_background}{crop the resulting bathymetry to its margin of valid values}
 }
 \value{
 the derived target extent and the map projection used, bathymetry, and coastline data
@@ -53,7 +55,7 @@ to run the function without any inputs at all and it will provide a random defau
 To input your data, use input locations as `xs` (longitude) and `ys` (latitude) values, there must be at least
 two locations.
 
-Try families such as `laea`, `ortho`, `gnomonic` if feeling adventurous.
+Try families such as 'lcc', 'laea', 'gnom', 'merc', 'aea' if feeling adventurous.
 }
 \examples{
 default_somap(c(0, 50), c(-70, -50))
@@ -62,4 +64,6 @@ default_somap(runif(10, 130, 200), runif(10, -85, -60))
 ## save the result to explore later!
 protomap <- default_somap(runif(10, 60, 160), runif(10, -73, -50))
 default_somap(coast = CCAMLR1, trim_background = FALSE)
+
+default_somap(runif(50, 40, 180), runif(50, -73, -10), family = "aea", centre_lat = -15, input_lines = FALSE)
 }

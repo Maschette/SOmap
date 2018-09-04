@@ -6,7 +6,7 @@
 #' To input your data, use input locations as `xs` (longitude) and `ys` (latitude) values, there must be at least
 #' two locations.
 #'
-#' Try families such as `laea`, `ortho`, `gnomonic` if feeling adventurous.
+#' Try families such as 'lcc', 'laea', 'gnom', 'merc', 'aea' if feeling adventurous.
 #'
 #' @param xs optional input data longitudes
 #' @param ys optional input data latitudes
@@ -23,6 +23,7 @@
 #' @param buffer fraction to expand plot range from that calculated (either from data, or from centre_lon/centre_lat _and_ data if `expand = TRUE`)
 #' @param contours add contours
 #' @param lvs contour levels if `contours = TRUE`
+#' @param trim_background crop the resulting bathymetry to its margin of valid values
 #'
 #' @return the derived target extent and the map projection used, bathymetry, and coastline data
 #' @export
@@ -36,6 +37,8 @@
 #' ## save the result to explore later!
 #' protomap <- default_somap(runif(10, 60, 160), runif(10, -73, -50))
 #' default_somap(coast = CCAMLR1, trim_background = FALSE)
+#'
+#' default_somap(runif(50, 40, 180), runif(50, -73, -10), family = "aea", centre_lat = -15, input_lines = FALSE)
 default_somap <- function(xs, ys, centre_lon = NULL, centre_lat = NULL, family = "stere",
                           expand = TRUE,
                           dimXY = c(300, 300),
@@ -76,7 +79,7 @@ default_somap <- function(xs, ys, centre_lon = NULL, centre_lat = NULL, family =
     ## won't generalize to northern hemisphere
     template <- "+proj=%s +lon_0=%f +lat_0=%f +lat_ts=-71 +datum=WGS84"
   }
-  if (family == "lcc") {
+  if (family %in% c("aea", "lcc")) {
     template <- paste("+proj=%s +lon_0=%f +lat_0=%f +datum=WGS84", sprintf("+lat_0=%f +lat_1=%f", ylim[1], ylim[2]))
   }
   prj <- sprintf(template, family, centre_lon, centre_lat)
