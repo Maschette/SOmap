@@ -10,8 +10,8 @@ SOmanagement(CCAMLR = FALSE, CCAMLRlab = FALSE, SSRU = FALSE,
   EEZ = FALSE, EEZlab = FALSE, MPA = FALSE, MPAlab = FALSE,
   IWC = FALSE, IWClab = FALSE, rbcol = 3, sprfmocol = "grey50",
   ccamlrcol = 2, ssrucol = "grey50", ssmucol = "grey70",
-  eezcol = "maroon", mpacol = "yellow", bordercol = c("white", "black"),
-  gratcol = "grey70", iwccol = "blue")
+  eezcol = "maroon", mpacol = "yellow", bordercol = c("white",
+  "black"), gratcol = "grey70", iwccol = "blue")
 }
 \arguments{
 \item{CCAMLR}{Insert the CCAMLR boundaries.}
@@ -73,4 +73,12 @@ Produces at the very base a round bathymetry map of the southern hemisphere.
 }
 \description{
 Function for adding management layers to SOmap
+}
+\examples{
+Dat.Dir<-getwd()
+png(paste(Dat.Dir,'/SOmap.png', sep=''), width=22, height=20, units='cm', res=600)
+SOmap(Trim=-45)
+SOmanagement(CCAMLR=T, CCAMLRlab=T, Trim=-45)
+dev.off()
+
 }
