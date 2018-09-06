@@ -24,6 +24,7 @@
 #' @param contours add contours
 #' @param lvs contour levels if `contours = TRUE`
 #' @param trim_background crop the resulting bathymetry to its margin of valid values
+#' @param llim logical, used to mask the raster to the graticule
 #'
 #' @return the derived target extent and the map projection used, bathymetry, and coastline data
 #' @export
@@ -45,7 +46,8 @@ default_somap <- function(xs, ys, centre_lon = NULL, centre_lat = NULL, family =
                           bathy = TRUE, coast = TRUE, input_points = TRUE, input_lines = TRUE,
                           graticule = TRUE, buffer=0.05,
                           contours=TRUE, lvs=c(-500, -1000, -2000),
-                          trim_background = TRUE) {
+                          trim_background = TRUE,
+                          llim = TRUE) {
   if (missing(xs) || missing(ys)) {
     xlim <- sort(runif(2, -359, 359))
     ylim <- sort(runif(2, -89, -20))
@@ -149,6 +151,11 @@ default_somap <- function(xs, ys, centre_lon = NULL, centre_lat = NULL, family =
   # projection(poly) <- projection(target)
   # g <- graticule(xlim, ylim, proj = projection(target),nverts=10, tiles=TRUE)}
 
+  if (llim) {
+    gratmask <- graticule::graticule(seq(xlim[1], xlim[2], length = 30),
+                                     seq(ylim[1], ylim[2], length = 5), proj = projection(target), tiles = TRUE)
+    bathymetry <- fast_mask(bathymetry, gratmask)
+  }
   if (bathy) image(bathymetry, add = TRUE, col = bluepal, axes = FALSE)#grey(seq(0, 1, length = 40)))
 
   if (contours) contour(bathymetry, nlevels=1, levels=c(lvs), col="black", add= TRUE)
@@ -221,4 +228,8 @@ aspectplot.default <- function(xlim,ylim,asp, ...) {
   return(p)
 }
 
-
+fast_mask <- function(ras, poly) {
+  cells <- tabularaster::cellnumbers(ras, sf::st_as_sf(poly))
+  ras[setdiff(1:ncell(ras), cells$cell_)] <- NA
+  ras
+}
