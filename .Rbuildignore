@@ -2,3 +2,5 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
 ^README\.Rmd$
+^R\SOchunk.r
+^R\Setup_sysdata.R

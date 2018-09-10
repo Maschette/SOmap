@@ -5,28 +5,49 @@
 \title{Default southern ocean map}
 \usage{
 default_somap(xs, ys, centre_lon = NULL, centre_lat = NULL,
-  family = "stere", dimXY = c(300, 300), bathy = TRUE,
-  coast = TRUE, input_points = TRUE, input_lines = TRUE,
-  graticule = TRUE, buffer = 0.05, contours = TRUE, lvs = c(-500,
-  -1000, -2000), addcont = TRUE)
+  family = "stere", expand = TRUE, dimXY = c(300, 300),
+  bathy = TRUE, coast = TRUE, input_points = TRUE,
+  input_lines = TRUE, graticule = TRUE, buffer = 0.05,
+  contours = TRUE, lvs = c(-500, -1000, -2000),
+  trim_background = TRUE, llim = TRUE)
 }
 \arguments{
-\item{xs, ys}{longitude and latitude values}
+\item{xs}{optional input data longitudes}
 
-\item{centre_lon, centre_lat}{optional map centre longitude and latitude}
+\item{ys}{optional input data latitudes}
+
+\item{centre_lon}{optional centre longitude (of the map projection, also used to for plot range if `expand = TRUE`)}
+
+\item{centre_lat}{as per `centre_lon`}
 
 \item{family}{optional projection family (default is `stere`ographic)}
 
+\item{expand}{re-compute range of plot to incorporate centre_lon and centre_lat with the data as a natural middle}
+
 \item{dimXY}{dimensions of background bathmetry (if used) default is 300x300}
 
-\item{bathy, coast}{optional input bathymetry or coastline data, defaults to `TRUE` set to `FALSE` to ignore or input your own}
+\item{bathy}{optional bathymetry data to use (or `FALSE` for no bathmetry image)}
 
-\item{input_points, input_lines}{flag to plot input data as points and / or lines}
+\item{coast}{optional coastline data to use (or `FALSE` for no coastline)}
+
+\item{input_points}{add points to plot (of xs, ys)}
+
+\item{input_lines}{add lines to plot   (of xs, ys)}
 
 \item{graticule}{flag to add a basic graticule}
+
+\item{buffer}{fraction to expand plot range from that calculated (either from data, or from centre_lon/centre_lat _and_ data if `expand = TRUE`)}
+
+\item{contours}{add contours}
+
+\item{lvs}{contour levels if `contours = TRUE`}
+
+\item{trim_background}{crop the resulting bathymetry to its margin of valid values}
+
+\item{llim}{logical, used to mask the raster to the graticule}
 }
 \value{
-the derived target extent in the map projection used, bathymetry, and coastline data
+the derived target extent and the map projection used, bathymetry, and coastline data
 }
 \description{
 Provide minimal input information to get a default map. The simplest case is
@@ -36,12 +57,15 @@ to run the function without any inputs at all and it will provide a random defau
 To input your data, use input locations as `xs` (longitude) and `ys` (latitude) values, there must be at least
 two locations.
 
-Try families such as `laea`, `ortho`, `gnomonic` if feeling adventurous.
+Try families such as 'lcc', 'laea', 'gnom', 'merc', 'aea' if feeling adventurous.
 }
 \examples{
 default_somap(c(0, 50), c(-70, -50))
 default_somap(runif(10, 130, 200), runif(10, -80, -10))
 default_somap(runif(10, 130, 200), runif(10, -85, -60))
 ## save the result to explore later!
-protomap <- default_somap(runif(10, 60, 160), runif(10, -73, -50), coast = rnaturalearth::ne_coastline())
+protomap <- default_somap(runif(10, 60, 160), runif(10, -73, -50))
+default_somap(coast = CCAMLR1, trim_background = FALSE)
+
+default_somap(runif(50, 40, 180), runif(50, -73, -10), family = "aea", centre_lat = -15, input_lines = FALSE)
 }
