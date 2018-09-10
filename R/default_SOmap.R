@@ -21,6 +21,8 @@
 #' @importFrom raster aggregate crop extent projectExtent projectRaster
 #' @importFrom rnaturalearth ne_coastline
 #' @importFrom rgdal project
+#' @importFrom stats runif
+#' @importFrom graphics contour lines par plot points text
 #' @examples
 #' default_somap(c(0, 50), c(-70, -50))
 #' default_somap(runif(10, 130, 200), runif(10, -80, -10))
