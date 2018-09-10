@@ -164,6 +164,7 @@ default_somap <- function(xs, ys, centre_lon = NULL, centre_lat = NULL, family =
     op <- par(xpd = NA)
     plot_graticule(grat)
     par(op)
+    graticule <- grat
   }
 
   par(pp)
@@ -172,7 +173,7 @@ default_somap <- function(xs, ys, centre_lon = NULL, centre_lat = NULL, family =
   # invisible(list(bathy = bathymetry, coastline = coastline, target = target))
   # } else {
 
-  invisible(list(bathy = bathymetry, coastline = coastline, target = target))
+  invisible(structure(list(bathy = bathymetry, coastline = coastline, target = target, data = xy, graticule = graticule), class = "SOmap"))
 
   #}
 }
