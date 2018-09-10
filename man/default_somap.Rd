@@ -7,7 +7,8 @@
 default_somap(xs, ys, centre_lon = NULL, centre_lat = NULL,
   family = "stere", dimXY = c(300, 300), bathy = TRUE,
   coast = TRUE, input_points = TRUE, input_lines = TRUE,
-  graticule = TRUE)
+  graticule = TRUE, buffer = 0.05, contours = TRUE, lvs = c(-500,
+  -1000, -2000), addcont = TRUE)
 }
 \arguments{
 \item{xs, ys}{longitude and latitude values}
@@ -43,10 +44,4 @@ default_somap(runif(10, 130, 200), runif(10, -80, -10))
 default_somap(runif(10, 130, 200), runif(10, -85, -60))
 ## save the result to explore later!
 protomap <- default_somap(runif(10, 60, 160), runif(10, -73, -50), coast = rnaturalearth::ne_coastline())
-\dontrun{
-library(lazyraster)
-ibcso <- as_raster(lazyraster(raadtools::topofile("ibcso")), dim = c(2000, 2000))
-projection(ibcso) <- projection(raadtools::readtopo("ibcso"))
-default_somap(runif(10, 30, 160), runif(10, -75, -40), bathy = ibcso)
-}
 }

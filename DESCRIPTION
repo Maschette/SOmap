@@ -8,5 +8,5 @@ Description: Create round Southern Ocean maps in a simple manner with multiple m
 License: GPL (>= 2)
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 6.0.1
+RoxygenNote: 6.1.0
 Depends: rgdal, raster, sp, graticule, proj4, rgeos, dplyr
