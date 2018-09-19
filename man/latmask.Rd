@@ -17,6 +17,8 @@ latmask(x, latitude = 0, southern = TRUE)
 Latitude mask for polar projections; written by M.D. Sumner and part of the spex package.
 }
 \examples{
+\dontrun{
+## assumes that you have already defined a raster object called 'ice'
 plot(latmask(ice, -60))
-
+}
 }

@@ -13,8 +13,10 @@
 #' @export
 #'
 #' @examples
+#' \dontrun{
+#' ## assumes that you have already defined a raster object called 'ice'
 #' plot(latmask(ice, -60))
-#'
+#' }
 latmask <- function(x, latitude = 0, southern = TRUE) {
   if (raster::isLonLat(x))  {
     xy <- sp::coordinates(x)
