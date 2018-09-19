@@ -39,7 +39,7 @@ Function for creating round Southern Ocean maps.
 \examples{
 Dat.Dir<-getwd()
 png(paste(Dat.Dir,'/SOmap.png', sep=''), width=22, height=20, units='cm', res=600)
-SOmap(Trim=-45, grats=T)
+SOmap(Trim=-45, Grats=TRUE)
 dev.off()
 
 }
