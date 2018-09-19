@@ -30,8 +30,9 @@
 #' @export
 #' @importFrom sf st_graticule st_as_sf
 #' @importFrom methods as
-#' @importFrom raster aggregate crop extend extent ncell projectExtent projection projectRaster xmin xmax ymin ymax
+#' @importFrom raster aggregate crop extend extent ncell plot projectExtent projection projectRaster xmin xmax ymin ymax
 #' @importFrom rgdal project
+#' @importFrom sp plot
 #' @importFrom stats na.omit runif
 #' @importFrom graphics contour lines par plot plot.new plot.window points text
 #' @examples
