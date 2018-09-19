@@ -29,10 +29,11 @@
 #' @return the derived target extent and the map projection used, bathymetry, and coastline data
 #' @export
 #' @importFrom sf st_graticule st_as_sf
-#' @importFrom raster aggregate crop extent projectExtent projectRaster
+#' @importFrom methods as
+#' @importFrom raster aggregate crop extend extent ncell projectExtent projection projectRaster xmin xmax ymin ymax
 #' @importFrom rgdal project
-#' @importFrom stats runif
-#' @importFrom graphics contour lines par plot points text
+#' @importFrom stats na.omit runif
+#' @importFrom graphics contour lines par plot plot.new plot.window points text
 #' @examples
 #' default_somap(c(0, 50), c(-70, -50))
 #' default_somap(runif(10, 130, 200), runif(10, -80, -10))
@@ -158,7 +159,7 @@ default_somap <- function(xs, ys, centre_lon = NULL, centre_lat = NULL, family =
                                      seq(ylim[1], ylim[2], length = 5), proj = projection(target), tiles = TRUE)
     bathymetry <- fast_mask(bathymetry, gratmask)
   }
-  if (bathy) image(bathymetry, add = TRUE, col = bluepal, axes = FALSE)#grey(seq(0, 1, length = 40)))
+  if (bathy) raster::image(bathymetry, add = TRUE, col = bluepal, axes = FALSE)#grey(seq(0, 1, length = 40)))
 
   if (contours) contour(bathymetry, nlevels=1, levels=c(lvs), col="black", add= TRUE)
   op <- par(xpd = FALSE)
