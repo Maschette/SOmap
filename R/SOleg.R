@@ -21,13 +21,14 @@
 #' @export
 #' @importFrom grDevices heat.colors
 #' @examples
+#' \dontrun{
 #' SOleg(position="topleft",
 #'       col=heat.colors(80),
 #'       ticks=4,
 #'       tlabs = c("1","10","100","1000"),
 #'       Trim=-45,
 #'       label="Heat")
-#'
+#' }
 
 SOleg<-function(x,
                 position="topright",
