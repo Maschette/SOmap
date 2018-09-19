@@ -42,7 +42,9 @@
 #' protomap <- default_somap(runif(10, 60, 160), runif(10, -73, -50))
 #' default_somap(coast = CCAMLR1, trim_background = FALSE)
 #'
-#' default_somap(runif(50, 40, 180), runif(50, -73, -10), family = "aea", centre_lat = -15, input_lines = FALSE)
+#' default_somap(runif(50, 40, 180), runif(50, -73, -10), family = "aea", centre_lat = -15,
+#'               input_lines = FALSE)
+
 default_somap <- function(xs, ys, centre_lon = NULL, centre_lat = NULL, family = "stere",
                           expand = TRUE,
                           dimXY = c(300, 300),
