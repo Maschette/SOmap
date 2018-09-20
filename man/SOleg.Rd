@@ -29,11 +29,12 @@ Creates rounded legends
 SOleg creating rounded legends for SOmap
 }
 \examples{
+\dontrun{
 SOleg(position="topleft",
       col=heat.colors(80),
       ticks=4,
       tlabs = c("1","10","100","1000"),
       Trim=-45,
       label="Heat")
-
+}
 }

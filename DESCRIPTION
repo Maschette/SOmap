@@ -1,7 +1,7 @@
 Package: SOmap
 Type: Package
 Title: Round Southern Ocean maps
-Version: 0.1.0
+Version: 0.1.1
 Author: Dale Maschette & Mike Sumner
 Maintainer: The package maintainer is Dale Maschette <dmaschette@westnet.com.au>
 Description: Create round Southern Ocean maps in a simple manner with multiple management layer options. Future versions will have the option of adding extra rounded legends for other layers. 
@@ -9,15 +9,17 @@ License: GPL (>= 2)
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 6.1.0
-Depends: R (>= 3.3.0), raster
+Depends: R (>= 3.3.0)
 Imports: 
     rgdal,
     raster,
     sp,
     graticule,
+    methods,
     proj4,
     rgeos,
     dplyr,
     sf,
     spex,
-    rnaturalearth
+    rnaturalearth,
+    tabularaster
