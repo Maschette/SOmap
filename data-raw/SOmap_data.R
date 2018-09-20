@@ -30,8 +30,7 @@ if (any(chk)) stop("non-ASCII chars in CCAMLR1 data")
 
 SOmap_data <- list(CCAMLR_MPA = MPA1, CCAMLR_statistical_areas = CCAMLR1)
 
-devtools::use_data(SOmap_data, overwrite = TRUE)
-
+devtools::use_data(SOmap_data, overwrite = TRUE, compress = "xz")
 
 ## clean up
 d <- dir(working_dir, full.names = TRUE, recursive = TRUE)
