@@ -134,6 +134,7 @@ default_somap <- function(xs, ys, centre_lon = NULL, centre_lat = NULL, family =
   if (isTRUE(coast)) {
     suppressWarnings({
       coastline <- as(sf::st_crop(sf::st_buffer(sf::st_transform(sf::st_as_sf(land1), prj), 0), xmin = xmin(target), xmax = xmax(target), ymin = ymin(target), ymax = ymax(target)), "Spatial")
+
     })
   } else {
     if (inherits(coast, "Spatial")) {
@@ -154,7 +155,12 @@ default_somap <- function(xs, ys, centre_lon = NULL, centre_lat = NULL, family =
   if (llim) {
     gratmask <- graticule::graticule(seq(xlim[1], xlim[2], length = 30),
                                      seq(ylim[1], ylim[2], length = 5), proj = projection(target), tiles = TRUE)
+    if (bathy) {
     bathymetry <- fast_mask(bathymetry, gratmask)
+    }
+    if (coast) {
+      coastline <- as(sf::st_union(sf::st_intersection(sf::st_as_sf(coastline), sf::st_as_sf(gratmask))), "Spatial")
+    }
   }
   if (bathy) image(bathymetry, add = TRUE, col = bluepal, axes = FALSE)#grey(seq(0, 1, length = 40)))
 
