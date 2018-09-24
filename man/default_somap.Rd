@@ -9,7 +9,7 @@ default_somap(xs, ys, centre_lon = NULL, centre_lat = NULL,
   bathy = TRUE, coast = TRUE, input_points = TRUE,
   input_lines = TRUE, graticule = TRUE, buffer = 0.05,
   contours = TRUE, lvs = c(-500, -1000, -2000),
-  trim_background = TRUE)
+  trim_background = TRUE, llim = TRUE)
 }
 \arguments{
 \item{xs}{optional input data longitudes}
@@ -43,6 +43,8 @@ default_somap(xs, ys, centre_lon = NULL, centre_lat = NULL,
 \item{lvs}{contour levels if `contours = TRUE`}
 
 \item{trim_background}{crop the resulting bathymetry to its margin of valid values}
+
+\item{llim}{logical, used to mask the raster to the graticule}
 }
 \value{
 the derived target extent and the map projection used, bathymetry, and coastline data
@@ -63,7 +65,7 @@ default_somap(runif(10, 130, 200), runif(10, -80, -10))
 default_somap(runif(10, 130, 200), runif(10, -85, -60))
 ## save the result to explore later!
 protomap <- default_somap(runif(10, 60, 160), runif(10, -73, -50))
-default_somap(coast = CCAMLR1, trim_background = FALSE)
 
-default_somap(runif(50, 40, 180), runif(50, -73, -10), family = "aea", centre_lat = -15, input_lines = FALSE)
+default_somap(runif(50, 40, 180), runif(50, -73, -10), family = "aea", centre_lat = -15,
+              input_lines = FALSE)
 }

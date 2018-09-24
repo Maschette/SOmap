@@ -61,13 +61,14 @@
 #' @return
 #' Produces at the very base a round bathymetry map of the southern hemisphere.
 #'
-#' @example
+#' @examples
+#' \dontrun{
 #' Dat.Dir<-getwd()
 #' png(paste(Dat.Dir,'/SOmap.png', sep=''), width=22, height=20, units='cm', res=600)
 #' SOmap(Trim=-45)
 #' SOmanagement(CCAMLR=T, CCAMLRlab=T, Trim=-45)
 #' dev.off()
-#'
+#' }
 #' @export
 #'
 

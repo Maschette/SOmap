@@ -19,19 +19,20 @@
 #' @return
 #' Creates rounded legends
 #' @export
-#'
+#' @importFrom grDevices heat.colors
 #' @examples
+#' \dontrun{
 #' SOleg(position="topleft",
 #'       col=heat.colors(80),
 #'       ticks=4,
 #'       tlabs = c("1","10","100","1000"),
 #'       Trim=-45,
 #'       label="Heat")
-#'
+#' }
 
 SOleg<-function(x,
                 position="topright",
-                col=heat.colors(80),
+                col= grDevices::heat.colors(80),
                 ticks=6,
                 tlabs="",
                 Trim=-45,

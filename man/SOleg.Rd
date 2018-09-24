@@ -4,8 +4,8 @@
 \alias{SOleg}
 \title{SOleg creating rounded legends for SOmap}
 \usage{
-SOleg(x, position = "topright", col = heat.colors(80), ticks = 6,
-  tlabs = "", Trim = -45, label = "Heat")
+SOleg(x, position = "topright", col = grDevices::heat.colors(80),
+  ticks = 6, tlabs = "", Trim = -45, label = "Heat")
 }
 \arguments{
 \item{x}{Object to plot (currently not used)}
@@ -29,11 +29,12 @@ Creates rounded legends
 SOleg creating rounded legends for SOmap
 }
 \examples{
+\dontrun{
 SOleg(position="topleft",
       col=heat.colors(80),
       ticks=4,
       tlabs = c("1","10","100","1000"),
       Trim=-45,
       label="Heat")
-
+}
 }
