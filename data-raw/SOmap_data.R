@@ -28,7 +28,20 @@ CCAMLR1$Descr <- gsub("\uc2\ub0", "degrees ", CCAMLR1$Descr)
 chk <- sapply(names(CCAMLR1), function(z) length(tools::showNonASCII(CCAMLR1[[z]])) > 0)
 if (any(chk)) stop("non-ASCII chars in CCAMLR1 data")
 
-SOmap_data <- list(CCAMLR_MPA = MPA1, CCAMLR_statistical_areas = CCAMLR1)
+
+## contintent (was land1)
+library(sf)
+library(dplyr)
+continent <- rnaturalearth::ne_countries(scale = 110, returnclass = "sf") %>%
+  st_buffer(dist = 0) %>%
+  group_by(continent) %>% summarize()
+g <- graticule::graticule(seq(-180, 180, by = 5), c(-90, 0), proj = psproj, tiles = TRUE)
+continent <- as(sf::st_intersection(sf::st_buffer(st_transform(continent, psproj), 0), sf::st_as_sf(g) %>% sf::st_union()) %>%
+                st_cast("MULTIPOLYGON"),
+                "Spatial")
+
+SOmap_data <- list(CCAMLR_MPA = MPA1, CCAMLR_statistical_areas = CCAMLR1,
+                   continent = continent)
 
 devtools::use_data(SOmap_data, overwrite = TRUE, compress = "xz")
 
