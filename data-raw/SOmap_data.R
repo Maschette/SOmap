@@ -101,8 +101,8 @@ if (FALSE) {
 
 SOmap_data <- list(CCAMLR_MPA = MPA1, CCAMLR_statistical_areas = CCAMLR1, CCAMLR_research_blocks = RB1,
                    CCAMLR_SSRU = SSRU1, CCAMLR_SSMU = SSMU1,
-                  # continent = continent, fronts_orsi = fronts_orsi,
-                  EEZ = EEZ1)
+                   continent = continent, fronts_orsi = fronts_orsi,
+                   EEZ = EEZ1)
 
 devtools::use_data(SOmap_data, overwrite = TRUE, compress = "xz")
 
