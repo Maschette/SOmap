@@ -28,6 +28,23 @@ CCAMLR1$Descr <- NULL #gsub("\uc2\ub0", "degrees ", CCAMLR1$Descr)
 chk <- sapply(names(CCAMLR1), function(z) length(tools::showNonASCII(CCAMLR1[[z]])) > 0)
 if (any(chk)) stop("non-ASCII chars in CCAMLR1 data")
 
+## research blocks
+files <- get_ccamlr_data("https://data.ccamlr.org/sites/default/files/rb-shapefile-WGS84_0.zip")
+RB1 <- spTransform(raster::shapefile(files[grepl("shp$", files)]), CRS(psproj))
+
+## SSRUs
+files <- get_ccamlr_data("https://data.ccamlr.org/sites/default/files/ssru-shapefile-WGS84.zip")
+SSRU1 <- spTransform(raster::shapefile(files[grepl("shp$", files)]), CRS(psproj))
+SSRU1$Descr <- NULL ## gsub("\uc2\ub0", "degrees ", SSRU1$Descr)
+chk <- sapply(names(SSRU1), function(z) length(tools::showNonASCII(SSRU1[[z]])) > 0)
+if (any(chk)) stop("non-ASCII chars in SSRU1 data")
+
+## SSMUs
+files <- get_ccamlr_data("https://data.ccamlr.org/sites/default/files/ssmu-shapefile-WGS84.zip")
+SSMU1 <- spTransform(raster::shapefile(files[grepl("shp$", files)]), CRS(psproj))
+chk <- sapply(names(SSMU1), function(z) length(tools::showNonASCII(SSMU1[[z]])) > 0)
+if (any(chk)) stop("non-ASCII chars in SSMU1 data")
+
 
 ## continent (was land1)
 library(sf)
@@ -39,6 +56,7 @@ g <- graticule::graticule(seq(-180, 180, by = 5), c(-90, 0), proj = psproj, tile
 continent <- as(sf::st_intersection(sf::st_buffer(st_transform(continent, psproj), 0), sf::st_as_sf(g) %>% sf::st_union()) %>%
                 st_cast("MULTIPOLYGON"),
                 "Spatial")
+
 
 chk <- sapply(names(continent), function(z) length(tools::showNonASCII(continent[[z]])) > 0)
 if (any(chk)) stop("non-ASCII chars in continent data")
@@ -79,11 +97,10 @@ eez_coast <- as(eez_coast, "Spatial")
 eez <- as(eez, "Spatial")
 
 
+fronts_orsi <- spTransform(orsifronts::orsifronts, CRS(psproj))
 
-
-
-SOmap_data <- list(CCAMLR_MPA = MPA1, CCAMLR_statistical_areas = CCAMLR1,
-                   continent = continent, fronts_orsi = fronts_orsi,
-                   eez = eez, eez_coast = eez_coast)
+SOmap_data <- list(CCAMLR_MPA = MPA1, CCAMLR_statistical_areas = CCAMLR1, CCAMLR_research_blocks = RB1,
+                   CCAMLR_SSRU = SSRU1, CCAMLR_SSMU = SSMU1,
+                   continent = continent, fronts_orsi = fronts_orsi)
 
 devtools::use_data(SOmap_data, overwrite = TRUE, compress = "xz")
