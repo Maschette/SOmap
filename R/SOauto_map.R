@@ -22,9 +22,9 @@
 #' @param graticule flag to add a basic graticule
 #' @param buffer fraction to expand plot range from that calculated (either from data, or from centre_lon/centre_lat _and_ data if `expand = TRUE`)
 #' @param contours add contours
-#' @param lvs contour levels if `contours = TRUE`
+#' @param levels contour levels if `contours = TRUE`
 #' @param trim_background crop the resulting bathymetry to its margin of valid values
-#' @param llim logical, used to mask the raster to the graticule
+#' @param mask logical, used to mask the raster to the graticule
 #'
 #' @return the derived target extent and the map projection used, bathymetry, and coastline data
 #' @export
@@ -36,23 +36,22 @@
 #' @importFrom stats na.omit runif
 #' @importFrom graphics contour lines par plot plot.new plot.window points text
 #' @examples
-#' default_somap(c(0, 50), c(-70, -50))
-#' default_somap(runif(10, 130, 200), runif(10, -80, -10))
-#' default_somap(runif(10, 130, 200), runif(10, -85, -60))
+#' SOauto_map(c(0, 50), c(-70, -50))
+#' SOauto_map(runif(10, 130, 200), runif(10, -80, -10))
+#' SOauto_map(runif(10, 130, 200), runif(10, -85, -60))
 #' ## save the result to explore later!
-#' protomap <- default_somap(runif(10, 60, 160), runif(10, -73, -50))
+#' protomap <- SOauto_map(runif(10, 60, 160), runif(10, -73, -50))
 #'
-#' default_somap(runif(50, 40, 180), runif(50, -73, -10), family = "aea", centre_lat = -15,
+#' SOauto_map(runif(50, 40, 180), runif(50, -73, -10), family = "aea", centre_lat = -15,
 #'               input_lines = FALSE)
-
-default_somap <- function(xs, ys, centre_lon = NULL, centre_lat = NULL, family = "stere",
+SOauto_map <- function(xs, ys, centre_lon = NULL, centre_lat = NULL, family = "stere",
                           expand = TRUE,
                           dimXY = c(300, 300),
                           bathy = TRUE, coast = TRUE, input_points = TRUE, input_lines = TRUE,
                           graticule = TRUE, buffer=0.05,
-                          contours=TRUE, lvs=c(-500, -1000, -2000),
+                          contours=TRUE, levels=c(-500, -1000, -2000),
                           trim_background = TRUE,
-                          llim = TRUE) {
+                          mask = TRUE) {
   if (missing(xs) || missing(ys)) {
     xlim <- sort(runif(2, -359, 359))
     ylim <- sort(runif(2, -89, -20))
@@ -157,7 +156,7 @@ default_somap <- function(xs, ys, centre_lon = NULL, centre_lat = NULL, family =
   # projection(poly) <- projection(target)
   # g <- graticule(xlim, ylim, proj = projection(target),nverts=10, tiles=TRUE)}
 
-  if (llim) {
+  if (mask) {
     gratmask <- graticule::graticule(seq(xlim[1], xlim[2], length = 30),
                                      seq(ylim[1], ylim[2], length = 5), proj = projection(target), tiles = TRUE)
     if (bathy) {
@@ -169,7 +168,7 @@ default_somap <- function(xs, ys, centre_lon = NULL, centre_lat = NULL, family =
   }
   if (bathy) raster::image(bathymetry, add = TRUE, col = bluepal, axes = FALSE)#grey(seq(0, 1, length = 40)))
 
-  if (contours) contour(bathymetry, nlevels=1, levels=c(lvs), col="black", add= TRUE)
+  if (contours) contour(bathymetry, nlevels=1, levels=c(levels), col="black", add= TRUE)
   op <- par(xpd = FALSE)
   if (coast) plot(coastline, add = TRUE)
   par(op)
@@ -196,6 +195,10 @@ default_somap <- function(xs, ys, centre_lon = NULL, centre_lat = NULL, family =
   #}
 }
 
+#' @export
+default_somap <- function(...) {
+  .Deprecated("SOauto_map")
+}
 ## from ?sf::st_graticule
 plot_graticule <- function(g) {
   plot(sf::st_geometry(g), add = TRUE, col = 'grey')
