@@ -94,13 +94,16 @@ eez <- sf::st_sfc(lapply(eez, function(x) sf::st_polygon(x[1])), crs = st_crs(ee
 
 
 eez_coast <- as(eez_coast, "Spatial")
-eez <- as(eez, "Spatial")
+EEZ1 <- as(eez, "Spatial")
 
 
 fronts_orsi <- spTransform(orsifronts::orsifronts, CRS(psproj))
 
 SOmap_data <- list(CCAMLR_MPA = MPA1, CCAMLR_statistical_areas = CCAMLR1, CCAMLR_research_blocks = RB1,
                    CCAMLR_SSRU = SSRU1, CCAMLR_SSMU = SSMU1,
-                   continent = continent, fronts_orsi = fronts_orsi)
+                  # continent = continent, fronts_orsi = fronts_orsi,
+                  eez_coast = eez_coast)
 
 devtools::use_data(SOmap_data, overwrite = TRUE, compress = "xz")
+
+devtools::use_data(EEZ1, CCAMLR1, continent, fronts_orsi, MPA1, RB1, SSMU1, SSRU1, compress = "xz")
