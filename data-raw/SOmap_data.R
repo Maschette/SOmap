@@ -17,14 +17,14 @@ files <- get_ccamlr_data("https://data.ccamlr.org/sites/default/files/mpa-shapef
 MPA1 <- spTransform(raster::shapefile(files[grepl("shp$", files)]), CRS(psproj))
 
 ## fix non-ascii to avoid check warnings
-MPA1$Descr <- gsub("\uc2\ub0", "degrees ", MPA1$Descr)
+MPA1$Descr <- NULL #gsub("\uc2\ub0", "degrees ", MPA1$Descr)
 chk <- sapply(names(MPA1), function(z) length(tools::showNonASCII(MPA1[[z]])) > 0)
 if (any(chk)) stop("non-ASCII chars in MPA data")
 
 ## statistical areas
 files <- get_ccamlr_data("https://data.ccamlr.org/sites/default/files/asd-shapefile-WGS84.zip")
 CCAMLR1 <- spTransform(raster::shapefile(files[grepl("shp$", files)]), CRS(psproj))
-CCAMLR1$Descr <- gsub("\uc2\ub0", "degrees ", CCAMLR1$Descr)
+CCAMLR1$Descr <- NULL #gsub("\uc2\ub0", "degrees ", CCAMLR1$Descr)
 chk <- sapply(names(CCAMLR1), function(z) length(tools::showNonASCII(CCAMLR1[[z]])) > 0)
 if (any(chk)) stop("non-ASCII chars in CCAMLR1 data")
 

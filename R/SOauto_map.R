@@ -197,6 +197,11 @@ SOauto_map <- function(xs, ys, centre_lon = NULL, centre_lat = NULL, family = "s
   #}
 }
 
+#' Deprecated function
+#'
+#' Deprecated from SOmap
+#' @param ... all arguments passed to new function
+#'
 #' @export
 default_somap <- function(...) {
   .Deprecated("SOauto_map")
