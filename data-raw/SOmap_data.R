@@ -106,4 +106,4 @@ SOmap_data <- list(CCAMLR_MPA = MPA1, CCAMLR_statistical_areas = CCAMLR1, CCAMLR
 
 devtools::use_data(SOmap_data, overwrite = TRUE, compress = "xz")
 
-devtools::use_data(EEZ1, CCAMLR1, continent, fronts_orsi, MPA1, RB1, SSMU1, SSRU1, compress = "xz", overwrite = TRUE)
+devtools::use_data(EEZ1, CCAMLR1, continent, MPA1, RB1, SSMU1, SSRU1, compress = "xz", overwrite = TRUE)
