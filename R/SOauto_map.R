@@ -3,13 +3,13 @@
 #' Provide minimal input information to get a default map. The simplest case is
 #' to run the function without any inputs at all and it will provide a random default.
 #'
-#' To input your data, use input locations as `xs` (longitude) and `ys` (latitude) values, there must be at least
+#' To input your data, use input locations as `x` (longitude) and `y` (latitude) values, there must be at least
 #' two locations.
 #'
 #' Try families such as 'lcc', 'laea', 'gnom', 'merc', 'aea' if feeling adventurous.
 #'
-#' @param xs optional input data longitudes
-#' @param ys optional input data latitudes
+#' @param x optional input data longitudes
+#' @param y optional input data latitudes
 #' @param centre_lon optional centre longitude (of the map projection, also used to for plot range if `expand = TRUE`)
 #' @param centre_lat as per `centre_lon`
 #' @param family optional projection family (default is `stere`ographic)
@@ -17,8 +17,8 @@
 #' @param dimXY dimensions of background bathmetry (if used) default is 300x300
 #' @param bathy optional bathymetry data to use (or `FALSE` for no bathmetry image)
 #' @param coast optional coastline data to use (or `FALSE` for no coastline)
-#' @param input_points add points to plot (of xs, ys)
-#' @param input_lines add lines to plot   (of xs, ys)
+#' @param input_points add points to plot (of x, y)
+#' @param input_lines add lines to plot   (of x, y)
 #' @param graticule flag to add a basic graticule
 #' @param buffer fraction to expand plot range from that calculated (either from data, or from centre_lon/centre_lat _and_ data if `expand = TRUE`)
 #' @param contours add contours
@@ -44,7 +44,7 @@
 #'
 #' SOauto_map(runif(50, 40, 180), runif(50, -73, -10), family = "aea", centre_lat = -15,
 #'               input_lines = FALSE)
-SOauto_map <- function(xs, ys, centre_lon = NULL, centre_lat = NULL, family = "stere",
+SOauto_map <- function(x, y, centre_lon = NULL, centre_lat = NULL, family = "stere",
                           expand = TRUE,
                           dimXY = c(300, 300),
                           bathy = TRUE, coast = TRUE, input_points = TRUE, input_lines = TRUE,
@@ -52,24 +52,53 @@ SOauto_map <- function(xs, ys, centre_lon = NULL, centre_lat = NULL, family = "s
                           contours=TRUE, levels=c(-500, -1000, -2000),
                           trim_background = TRUE,
                           mask = TRUE) {
-  if (missing(xs) || missing(ys)) {
+
+  if (missing(x) || missing(y)) {
     xlim <- sort(runif(2, -359, 359))
     ylim <- sort(runif(2, -89, -20))
 
-    xs <- runif(30, xlim[1], xlim[2])
-    ys <- runif(30, ylim[1], ylim[2])
-    xy <- cbind(xs, ys)
+    x <- runif(30, xlim[1], xlim[2])
+    y <- runif(30, ylim[1], ylim[2])
+    xy <- cbind(x, y)
     xy <- xy[order(xy[, 1], xy[,2]), ]
-    xs <- xy[,1]
-    ys <- xy[,2]
+    x <- xy[,1]
+    y <- xy[,2]
   }
-  xs <- na.omit(xs)
-  ys <- na.omit(ys)
-  stopifnot(length(xs) > 1)
-  stopifnot(length(ys) > 1)
+  x <- na.omit(x)
+  y <- na.omit(y)
+  stopifnot(length(x) > 1)
+  stopifnot(length(y) > 1)
 
-  xlim <- range(xs)
-  ylim <- range(ys)
+
+  if (is.numeric(x) && is.numeric(y)) {
+    testx <- cbind(x, y)
+  } else {
+    testx <- x  ## assume we have some kind of object
+  }
+  ## ignore y
+  if (is.matrix(testx)) {
+    if (nrow(testx) ==2 ) {
+      testx <- rbind(testx, testx)  ## because raster::extent(cbind(145:146, -42:-43))
+    }
+    if (!raster::couldBeLonLat(testx, warnings = FALSE)) {
+      warning("'x' doesn't look like longlat data")
+    }
+  } else {
+    ## we have some kind of object
+    testx <- try(spbabel::sptable(x))  ##
+    if (inherits(testx, "try-error")) stop("don't understand how to get lon,lat from 'x'")
+    testx <- as.matrix(testx[c("x_", "y_")])
+    if (!raster::isLonLat(projection(x))) {
+      testx <- rgdal::project(testx, projection(x), inv = TRUE)
+    }
+    x <- testx[,1]
+    y <- testy[,2]
+  }
+
+
+
+  xlim <- range(x)
+  ylim <- range(y)
   if (ylim[1] < -90) {ylim[1] <- -90}
   if (ylim[2] > 0) {ylim[2] <- 0}
 
@@ -91,20 +120,20 @@ SOauto_map <- function(xs, ys, centre_lon = NULL, centre_lat = NULL, family = "s
   prj <- sprintf(template, family, centre_lon, centre_lat)
 
 
-  target <- raster::projectExtent(raster::raster(extent(xlim, ylim), crs = "+init=epsg:4326"),
+  target <- raster::projectExtent(raster::raster(raster::extent(xlim, ylim), crs = "+init=epsg:4326"),
                                   prj)
   dim(target) <- dimXY
   ## extend projected bounds by the buffer
-  xxlim <- c(xmin(target), xmax(target))
+  xxlim <- c(raster::xmin(target), raster::xmax(target))
   xxlim <- xxlim + diff(range(xxlim)) * c(-buffer, buffer)
-  yylim <- c(ymin(target), ymax(target))
+  yylim <- c(raster::ymin(target), raster::ymax(target))
   yylim <- yylim + diff(range(yylim)) * c(-buffer, buffer)
   target <- extend(target, extent(xxlim, yylim))
   if (expand) {
     centre_line <- rgdal::project(cbind(centre_lon, centre_lat), prj)
     ## we need the largest of the difference from centre to target boundary
-    xhalf <- max(abs(centre_line[1] - c(xmin(target), xmax(target))))
-    yhalf <- max(abs(centre_line[2] - c(ymin(target), ymax(target))))
+    xhalf <- max(abs(centre_line[1] - c(raster::xmin(target), raster::xmax(target))))
+    yhalf <- max(abs(centre_line[2] - c(raster::ymin(target), raster::ymax(target))))
     exp_xlim <- centre_line[1] + c(-xhalf, xhalf)
     exp_ylim <- centre_line[2] + c(-yhalf, yhalf)
 
@@ -131,14 +160,14 @@ SOauto_map <- function(xs, ys, centre_lon = NULL, centre_lat = NULL, family = "s
 
   }
   # par(pp)
-  aspect <- if (raster::isLonLat(target)) 1/cos(mean(c(xmin(target), xmax(target))) * pi/180) else 1
-  pp <- aspectplot.default(c(xmin(target), xmax(target)), c(ymin(target), ymax(target)), asp = aspect, mar = par("mar")/2.5)
+  aspect <- if (raster::isLonLat(target)) 1/cos(mean(c(raster::xmin(target), raster::xmax(target))) * pi/180) else 1
+  pp <- aspectplot.default(c(raster::xmin(target), raster::xmax(target)), c(raster::ymin(target), raster::ymax(target)), asp = aspect, mar = par("mar")/2.5)
   newextent <- raster::extent(par("usr"))
 
   if (isTRUE(coast)) {
     suppressWarnings({
 
-      coastline <- as(sf::st_crop(sf::st_buffer(sf::st_transform(sf::st_as_sf(continent), prj), 0), xmin = xmin(target), xmax = xmax(target), ymin = ymin(target), ymax = ymax(target)), "Spatial")
+      coastline <- as(sf::st_crop(sf::st_buffer(sf::st_transform(sf::st_as_sf(continent), prj), 0), xmin = raster::xmin(target), xmax = raster::xmax(target), ymin = raster::ymin(target), ymax = raster::ymax(target)), "Spatial")
 
     })
   } else {
@@ -175,12 +204,12 @@ SOauto_map <- function(xs, ys, centre_lon = NULL, centre_lat = NULL, family = "s
   op <- par(xpd = FALSE)
   if (coast) plot(coastline, add = TRUE)
   par(op)
-  if (input_points || input_lines) xy <- rgdal::project(cbind(xs, ys), prj)
+  if (input_points || input_lines) xy <- rgdal::project(cbind(x, y), prj)
   if (input_points) points(xy)
   if (input_lines) lines(xy)
 
   if (graticule) {
-    grat <- sf::st_graticule(c(xmin(target), ymin(target), xmax(target), ymax(target)), crs = projection(target))
+    grat <- sf::st_graticule(c(raster::xmin(target), raster::ymin(target), raster::xmax(target), raster::ymax(target)), crs = projection(target))
     op <- par(xpd = NA)
     plot_graticule(grat)
     par(op)
