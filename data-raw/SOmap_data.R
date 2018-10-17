@@ -40,8 +40,12 @@ continent <- as(sf::st_intersection(sf::st_buffer(st_transform(continent, psproj
                 st_cast("MULTIPOLYGON"),
                 "Spatial")
 
+
+## fronts (was ocean1)
+fronts_orsi <- spTransform(orsifronts::orsifronts, CRS(psproj))
+
 SOmap_data <- list(CCAMLR_MPA = MPA1, CCAMLR_statistical_areas = CCAMLR1,
-                   continent = continent)
+                   continent = continent, fronts_orsi = fronts_orsi)
 
 devtools::use_data(SOmap_data, overwrite = TRUE, compress = "xz")
 
