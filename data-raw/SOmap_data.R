@@ -54,7 +54,7 @@ continent <- rnaturalearth::ne_countries(scale = 110, returnclass = "sf") %>%
   group_by(continent) %>% summarize()
 continent <- st_crop(continent, st_bbox(sf::st_as_sf(spex::spex(raster::extent(-180, 180, -84, 90), crs = "+init=epsg:4326"))))
 
-g <- graticule::graticule(seq(-180, 180, by = 5), c(--84, 0), proj = psproj, tiles = TRUE)
+g <- graticule::graticule(seq(-180, 180, by = 5), c(-84, 0), proj = psproj, tiles = TRUE)
 continent <- as(sf::st_intersection(sf::st_buffer(st_transform(continent, psproj), 0), sf::st_as_sf(g) %>% sf::st_union()) %>%
                 st_cast("MULTIPOLYGON"),
                 "Spatial")
