@@ -163,7 +163,9 @@ SOauto_map <- function(xs, ys, centre_lon = NULL, centre_lat = NULL, family = "s
     bathymetry <- fast_mask(bathymetry, gratmask)
     }
     if (coast) {
+      suppressWarnings({
       coastline <- as(sf::st_union(sf::st_intersection(sf::st_as_sf(coastline), sf::st_as_sf(gratmask))), "Spatial")
+      })
     }
   }
   if (bathy) raster::image(bathymetry, add = TRUE, col = bluepal, axes = FALSE)#grey(seq(0, 1, length = 40)))
