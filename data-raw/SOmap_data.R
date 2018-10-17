@@ -40,10 +40,14 @@ continent <- as(sf::st_intersection(sf::st_buffer(st_transform(continent, psproj
                 st_cast("MULTIPOLYGON"),
                 "Spatial")
 
+chk <- sapply(names(continent), function(z) length(tools::showNonASCII(continent[[z]])) > 0)
+if (any(chk)) stop("non-ASCII chars in continent data")
 
 ## fronts (was ocean1)
 fronts_orsi <- spTransform(orsifronts::orsifronts, CRS(psproj))
 
+chk <- sapply(names(fronts_orsi), function(z) length(tools::showNonASCII(fronts_orsi[[z]])) > 0)
+if (any(chk)) stop("non-ASCII chars in fronts_orsi data")
 
 
 ## eez and eez_coast (was EEZ1)
@@ -59,13 +63,16 @@ eezlist <- lapply(c(25513, 8383, 8385, 8388, 8387, 8384, 8399), function(id) {
 })
 
 common <- purrr::reduce(purrr::map(eezlist, names), intersect)
-eez_coast <- sf::st_transform(do.call(rbind, purrr::map(eezlist, ~.x[common])), psproj)
+eez_coast <- st_geometry(sf::st_transform(do.call(rbind, purrr::map(eezlist, ~.x[common])), psproj))
 
 ## kill the coast
 library(dplyr)
 eez <- st_cast(eez_coast, "POLYGON")
-g <- st_geometry(eez)
-eez <- st_set_geometry(eez, sf::st_sfc(lapply(g, function(x) sf::st_polygon(x[1])), crs = st_crs(g))) %>% dplyr::select(territory1, everything())
+#g <- st_geometry(eez)
+#eez <- st_set_geometry(eez, sf::st_sfc(lapply(g, function(x) sf::st_polygon(x[1])), crs = st_crs(g))) %>% dplyr::select(territory1, everything())
+eez <- sf::st_sfc(lapply(eez, function(x) sf::st_polygon(x[1])), crs = st_crs(eez))
+
+
 
 
 eez_coast <- as(eez_coast, "Spatial")
