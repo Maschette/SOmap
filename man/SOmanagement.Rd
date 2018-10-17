@@ -40,9 +40,9 @@ SOmanagement(CCAMLR = FALSE, CCAMLRlab = FALSE, SSRU = FALSE,
 
 \item{EEZlab}{Insert Exclusive Economic Zone labels.}
 
-\item{MPA}{Insert CCAMLE Marine Protected Areas.}
+\item{MPA}{Insert CCAMLR Marine Protected Areas.}
 
-\item{MPAlab}{Insert CCAMLE Marine Protected Area labels.}
+\item{MPAlab}{Insert CCAMLR Marine Protected Area labels.}
 
 \item{IWC}{Insert International Whaling Commission boundaries.}
 

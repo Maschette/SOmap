@@ -30,9 +30,9 @@
 #' @param EEZlab
 #' Insert Exclusive Economic Zone labels.
 #' @param MPA
-#' Insert CCAMLE Marine Protected Areas.
+#' Insert CCAMLR Marine Protected Areas.
 #' @param MPAlab
-#' Insert CCAMLE Marine Protected Area labels.
+#' Insert CCAMLR Marine Protected Area labels.
 #' @param IWC
 #' Insert International Whaling Commission boundaries.
 #' @param IWClab
