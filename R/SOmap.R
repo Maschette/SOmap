@@ -116,5 +116,5 @@ SOmap<-function(Bathleg=TRUE,
     }
     ## Return Par
     graphics::par(op)
-    print("Congratulations, you did a thing!")
+    invisible(NULL)
 }
