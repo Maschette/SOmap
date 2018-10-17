@@ -67,7 +67,7 @@ SOmap::SOmanagement(EEZ = T)
 
 An **auto** plot function will take any data in the form of longitude and latitude vectors and create a guess at a map. It returns the data used to make the map so that further customization can be made. 
 
-```{r automap} 
+```{r automap, fig.height=5,fig.width=5, dpi=300} 
 tfile <- tempfile(fileext = "RData")
 download.file("https://github.com/ianjonsen/bsam/raw/master/data/ellie.RData", tfile, mode = "wb")
 load(tfile)
