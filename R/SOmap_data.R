@@ -37,3 +37,20 @@
 #' ## just because you can doesn't mean you should ...
 #' SOauto_map(xy[,1], xy[,2], bathy = ice, input_points = FALSE, levels = c(15, 30, 60, 90))
 NULL
+
+#' Bathymetric data for maps
+#'
+#' Bathymetric data reprocessed from the GEBCO_2014 Grid data set.
+#'
+#' @docType data
+#'
+#' @usage data(Bathy)
+#'
+#' @format An object of class \code{"RasterLayer"}
+#'
+#' @keywords datasets
+#'
+#' @references The GEBCO_2014 Grid, version 20150318
+#'
+#' @source \href{https://www.gebco.net/data_and_products/gridded_bathymetry_data/}{GEBCO}
+"Bathy"
