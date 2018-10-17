@@ -22,6 +22,13 @@
 #'       \item URL: https://data.ccamlr.org/dataset/statistical-areas-subareas-and-divisions
 #'       \item License: Public domain
 #'     }
+#'   \item fronts_orsi
+#'     \itemize{
+#'       \item Description: Southern Ocean fronts as defined by Orsi et al. 1995
+#'       \item Source: orsifronts
+#'       \item URL: https://github.com/AustralianAntarcticDivision/orsifronts
+#'       \item License: see orsifronts
+#'     }
 #' }
 #' @keywords datasets
 "SOmap_data"
