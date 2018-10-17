@@ -1,11 +1,11 @@
 Package: SOmap
 Type: Package
-Title: Round Southern Ocean maps
-Version: 0.1.2
+Title: Southern Ocean maps
+Version: 0.1.3
 Authors@R: c(person("Dale", "Maschette", email = "dmaschette@westnet.com.au", role = c("aut","cre")),
              person("Michael", "Sumner", email = "michael.sumner@aad.gov.au", role = "aut"),
              person("Ben", "Raymond", role = "aut"))
-Description: Create round Southern Ocean maps in a simple manner with multiple management layer options. Future versions will have the option of adding extra rounded legends for other layers. 
+Description: Create publication-quality Southern Ocean maps in a simple manner with multiple management layer options. Future versions will have the option of adding extra rounded legends for other layers. 
 URL: https://github.com/Maschette/SOmap
 BugReports: https://github.com/Maschette/SOmap/issues
 License: GPL (>= 2)
@@ -13,7 +13,7 @@ Encoding: UTF-8
 LazyData: true
 RoxygenNote: 6.1.0
 Depends: R (>= 3.3.0)
-Imports: 
+Imports:
     rgdal,
     raster,
     sp,
@@ -23,5 +23,5 @@ Imports:
     rgeos,
     sf,
     tabularaster
-Suggests: 
+Suggests:
     covr

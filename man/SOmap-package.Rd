@@ -4,11 +4,11 @@
 \name{SOmap-package}
 \alias{SOmap}
 \alias{SOmap-package}
-\title{SOmap: Round Southern Ocean maps}
+\title{SOmap: Southern Ocean maps}
 \description{
 \if{html}{\figure{logo.png}{options: align='right'}}
 
-Create round Southern Ocean maps in a simple manner with multiple management layer options. Future versions will have the option of adding extra rounded legends for other layers.
+Create publication-quality Southern Ocean maps in a simple manner with multiple management layer options. Future versions will have the option of adding extra rounded legends for other layers.
 }
 \seealso{
 Useful links:
