@@ -47,8 +47,11 @@ SOmap<-function(Bathleg=TRUE,
                 frontcols=c("hotpink","orchid","plum"),
                 bordercol=c("white","black"),
                 gratcol="grey70") {
-    ## Set up color palette for bathy #
-    ramp2<-grDevices::colorRampPalette(c("#54A3D1","#60B3EB","#78C8F0","#98D1F5","#B5DCFF","#BDE1F0","#CDEBFA","#D6EFFF","#EBFAFF","grey92","grey94","grey96", "white"))
+    ## data
+    SOmap_data <- NULL
+    data("SOmap_data", package = "SOmap", envir = environment())
+
+    ## Set up color palette for bathy    ramp2<-grDevices::colorRampPalette(c("#54A3D1","#60B3EB","#78C8F0","#98D1F5","#B5DCFF","#BDE1F0","#CDEBFA","#D6EFFF","#EBFAFF","grey92","grey94","grey96", "white"))
     bluepal<-ramp2(68)
     bluepal2<-ramp2(80)
     ## Setup color border #
@@ -96,7 +99,7 @@ SOmap<-function(Bathleg=TRUE,
     }
     ## fronts
     if (fronts) {
-        plot(fronts_orsi,add=TRUE, col=frontcols[droplevels(fronts_orsi$name)])
+        plot(SOmap_data$fronts_orsi, add = TRUE, col = frontcols[droplevels(SOmap_data$fronts_orsi$name)])
     }
     ## Graticule grid
     if (Grats) {

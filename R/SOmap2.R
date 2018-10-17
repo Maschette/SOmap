@@ -117,6 +117,10 @@ SOmap2<-function(Bathleg=TRUE,
                 gratcol="grey70",
                 iwccol="blue"){
 
+    ## data
+    SOmap_data <- NULL
+    data("SOmap_data", package = "SOmap", envir = environment())
+
 #### Set up color palette for bathy #
   ramp2<-grDevices::colorRampPalette(c("#54A3D1","#60B3EB","#78C8F0","#98D1F5","#B5DCFF","#BDE1F0","#CDEBFA","#D6EFFF","#EBFAFF","grey92","grey94","grey96", "white"))
   bluepal<-ramp2(68)
@@ -159,10 +163,14 @@ SOmap2<-function(Bathleg=TRUE,
     potato<-raster::image
     potato(raster::trim(SOmap::latmask(Bathy, latitude = q)), col=bluepal, yaxt='n', xaxt='n')}
   graphics::box(col = "white")
-  if(land==TRUE){if(CCAMLR==TRUE){
-    notANT <- continent[continent$continent !="Antarctica",]
-    plot(notANT,border=1, add = TRUE)} else{
-    plot(continent, border=1, add = TRUE)}}
+    if (land) {
+        if (CCAMLR) {
+            notANT <- continent[continent$continent !="Antarctica",]
+            plot(notANT,border=1, add = TRUE)
+        } else {
+            plot(continent, border=1, add = TRUE)
+        }
+    }
 
   if(IWC==TRUE){
     # iwc<-graticule::graticule(c(-170,-120,-60,0,70,130,-230), c(-90,Trim+0.5), proj=raster::projection(Bathy))
@@ -187,7 +195,7 @@ SOmap2<-function(Bathleg=TRUE,
   }
   #fronts
   if(fronts==TRUE){
-    plot(fronts_orsi, add=TRUE, col = frontcols[fronts_orsi$name])}
+    plot(SOmap_data$fronts_orsi, add = TRUE, col = frontcols[SOmap_data$fronts_orsi$name])}
 
   #Graticule grid
   if(Grats==TRUE){
