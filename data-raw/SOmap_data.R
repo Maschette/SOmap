@@ -29,7 +29,7 @@ chk <- sapply(names(CCAMLR1), function(z) length(tools::showNonASCII(CCAMLR1[[z]
 if (any(chk)) stop("non-ASCII chars in CCAMLR1 data")
 
 
-## contintent (was land1)
+## continent (was land1)
 library(sf)
 library(dplyr)
 continent <- rnaturalearth::ne_countries(scale = 110, returnclass = "sf") %>%
@@ -44,11 +44,39 @@ continent <- as(sf::st_intersection(sf::st_buffer(st_transform(continent, psproj
 ## fronts (was ocean1)
 fronts_orsi <- spTransform(orsifronts::orsifronts, CRS(psproj))
 
+
+
+## eez and eez_coast (was EEZ1)
+#devtools::install_github('SymbolixAU/geojsonsf')
+library(geojsonsf)
+eezlist <- lapply(c(25513, 8383, 8385, 8388, 8387, 8384, 8399), function(id) {
+  key <- if (id %in% c(25513)) "eez_iho" else "eez"
+  this_url <- paste0("http://geo.vliz.be/geoserver/wfs?request=getfeature&service=wfs&version=1.1.0&typename=MarineRegions:", key, "&outputformat=json&filter=%3CPropertyIsEqualTo%3E%3CPropertyName%3Emrgid%3C%2FPropertyName%3E%3CLiteral%3E", id, "%3C%2FLiteral%3E%3C%2FPropertyIsEqualTo%3E") ## geojson
+
+  tf <- tempfile(fileext = ".json")
+  download.file(this_url, destfile = tf)
+  geojson_sf(tf)
+})
+
+common <- purrr::reduce(purrr::map(eezlist, names), intersect)
+eez_coast <- sf::st_transform(do.call(rbind, purrr::map(eezlist, ~.x[common])), psproj)
+
+## kill the coast
+library(dplyr)
+eez <- st_cast(eez_coast, "POLYGON")
+g <- st_geometry(eez)
+eez <- st_set_geometry(eez, sf::st_sfc(lapply(g, function(x) sf::st_polygon(x[1])), crs = st_crs(g))) %>% dplyr::select(territory1, everything())
+
+
+eez_coast <- as(eez_coast, "Spatial")
+eez <- as(eez, "Spatial")
+
+
+
+
+
 SOmap_data <- list(CCAMLR_MPA = MPA1, CCAMLR_statistical_areas = CCAMLR1,
-                   continent = continent, fronts_orsi = fronts_orsi)
+                   continent = continent, fronts_orsi = fronts_orsi,
+                   eez = eez, eez_coast = eez_coast)
 
 devtools::use_data(SOmap_data, overwrite = TRUE, compress = "xz")
-
-## clean up
-d <- dir(working_dir, full.names = TRUE, recursive = TRUE)
-unlink(d)
