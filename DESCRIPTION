@@ -23,3 +23,5 @@ Imports:
     rgeos,
     sf,
     tabularaster
+Suggests: 
+    covr
