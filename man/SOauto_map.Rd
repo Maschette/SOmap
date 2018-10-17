@@ -2,7 +2,7 @@
 % Please edit documentation in R/SOauto_map.R
 \name{SOauto_map}
 \alias{SOauto_map}
-\title{Default southern ocean map}
+\title{Default Southern Ocean map}
 \usage{
 SOauto_map(xs, ys, centre_lon = NULL, centre_lat = NULL,
   family = "stere", expand = TRUE, dimXY = c(300, 300),

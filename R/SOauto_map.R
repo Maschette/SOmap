@@ -1,4 +1,4 @@
-#' Default southern ocean map
+#' Default Southern Ocean map
 #'
 #' Provide minimal input information to get a default map. The simplest case is
 #' to run the function without any inputs at all and it will provide a random default.
