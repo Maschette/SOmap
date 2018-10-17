@@ -160,9 +160,9 @@ SOmap2<-function(Bathleg=TRUE,
     potato(raster::trim(SOmap::latmask(Bathy, latitude = q)), col=bluepal, yaxt='n', xaxt='n')}
   graphics::box(col = "white")
   if(land==TRUE){if(CCAMLR==TRUE){
-    notANT<-land1[land1$CONTINENT!="Antarctica",]
+    notANT <- continent[continent$continent !="Antarctica",]
     plot(notANT,border=1, add = TRUE)} else{
-    plot(land1,border=1, add = TRUE)}}
+    plot(continent, border=1, add = TRUE)}}
 
   if(IWC==TRUE){
     # iwc<-graticule::graticule(c(-170,-120,-60,0,70,130,-230), c(-90,Trim+0.5), proj=raster::projection(Bathy))
