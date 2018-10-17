@@ -96,7 +96,7 @@ SOmap<-function(Bathleg=TRUE,
     }
     ## fronts
     if (fronts) {
-        plot(ocean2,add=TRUE, col=frontcols[droplevels(ocean2$NAME)])
+        plot(fronts_orsi,add=TRUE, col=frontcols[droplevels(fronts_orsi$name)])
     }
     ## Graticule grid
     if (Grats) {

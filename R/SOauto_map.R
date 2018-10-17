@@ -137,6 +137,7 @@ SOauto_map <- function(xs, ys, centre_lon = NULL, centre_lat = NULL, family = "s
 
   if (isTRUE(coast)) {
     suppressWarnings({
+
       coastline <- as(sf::st_crop(sf::st_buffer(sf::st_transform(sf::st_as_sf(continent), prj), 0), xmin = xmin(target), xmax = xmax(target), ymin = ymin(target), ymax = ymax(target)), "Spatial")
 
     })

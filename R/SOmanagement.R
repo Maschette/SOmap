@@ -183,7 +183,8 @@ SOmanagement<-function(CCAMLR= FALSE,
     text(MPA1, labels = MPA1@data$ShortLabel, col=mpacol,cex = 0.35, pos=1, offset=0.2)}
 
   ## Return Par
-  print("ooooh pretty!")
+  #print("ooooh pretty!")
+  invisible(NULL)
 }
 
 

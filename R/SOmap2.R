@@ -187,7 +187,7 @@ SOmap2<-function(Bathleg=TRUE,
   }
   #fronts
   if(fronts==TRUE){
-    plot(ocean2,add=TRUE, col=frontcols[ocean2$NAME])}
+    plot(fronts_orsi, add=TRUE, col = frontcols[fronts_orsi$name])}
 
   #Graticule grid
   if(Grats==TRUE){
