@@ -5,7 +5,7 @@ psproj <- "+proj=stere +lat_0=-90 +lat_ts=-71 +lon_0=0 +k=1 +x_0=0 +y_0=0 +datum
 library(sp)
 library(raster)
 
-get_ccamlr_data <- function(this_url) {
+get_unzip_data <- function(this_url) {
     working_dir <- tempfile()
     if (!dir.exists(working_dir)) dir.create(working_dir)
     download.file(this_url, destfile = file.path(working_dir, basename(this_url)))
@@ -13,7 +13,7 @@ get_ccamlr_data <- function(this_url) {
 }
 
 ## MPAs
-files <- get_ccamlr_data("https://data.ccamlr.org/sites/default/files/mpa-shapefile-WGS84_0.zip") ## "https://data.ccamlr.org/sites/default/files/mpa-shapefile-EPSG102020_0.zip"
+files <- get_unzip_data("https://data.ccamlr.org/sites/default/files/mpa-shapefile-WGS84_0.zip") ## "https://data.ccamlr.org/sites/default/files/mpa-shapefile-EPSG102020_0.zip"
 MPA1 <- spTransform(raster::shapefile(files[grepl("shp$", files)]), CRS(psproj))
 
 ## fix non-ascii to avoid check warnings
@@ -22,25 +22,25 @@ chk <- sapply(names(MPA1), function(z) length(tools::showNonASCII(MPA1[[z]])) > 
 if (any(chk)) stop("non-ASCII chars in MPA data")
 
 ## statistical areas
-files <- get_ccamlr_data("https://data.ccamlr.org/sites/default/files/asd-shapefile-WGS84.zip")
+files <- get_unzip_data("https://data.ccamlr.org/sites/default/files/asd-shapefile-WGS84.zip")
 CCAMLR1 <- spTransform(raster::shapefile(files[grepl("shp$", files)]), CRS(psproj))
 CCAMLR1$Descr <- NULL #gsub("\uc2\ub0", "degrees ", CCAMLR1$Descr)
 chk <- sapply(names(CCAMLR1), function(z) length(tools::showNonASCII(CCAMLR1[[z]])) > 0)
 if (any(chk)) stop("non-ASCII chars in CCAMLR1 data")
 
 ## research blocks
-files <- get_ccamlr_data("https://data.ccamlr.org/sites/default/files/rb-shapefile-WGS84_0.zip")
+files <- get_unzip_data("https://data.ccamlr.org/sites/default/files/rb-shapefile-WGS84_0.zip")
 RB1 <- spTransform(raster::shapefile(files[grepl("shp$", files)]), CRS(psproj))
 
 ## SSRUs
-files <- get_ccamlr_data("https://data.ccamlr.org/sites/default/files/ssru-shapefile-WGS84.zip")
+files <- get_unzip_data("https://data.ccamlr.org/sites/default/files/ssru-shapefile-WGS84.zip")
 SSRU1 <- spTransform(raster::shapefile(files[grepl("shp$", files)]), CRS(psproj))
 SSRU1$Descr <- NULL ## gsub("\uc2\ub0", "degrees ", SSRU1$Descr)
 chk <- sapply(names(SSRU1), function(z) length(tools::showNonASCII(SSRU1[[z]])) > 0)
 if (any(chk)) stop("non-ASCII chars in SSRU1 data")
 
 ## SSMUs
-files <- get_ccamlr_data("https://data.ccamlr.org/sites/default/files/ssmu-shapefile-WGS84.zip")
+files <- get_unzip_data("https://data.ccamlr.org/sites/default/files/ssmu-shapefile-WGS84.zip")
 SSMU1 <- spTransform(raster::shapefile(files[grepl("shp$", files)]), CRS(psproj))
 chk <- sapply(names(SSMU1), function(z) length(tools::showNonASCII(SSMU1[[z]])) > 0)
 if (any(chk)) stop("non-ASCII chars in SSMU1 data")
@@ -74,7 +74,7 @@ chk <- sapply(names(fronts_orsi), function(z) length(tools::showNonASCII(fronts_
 if (any(chk)) stop("non-ASCII chars in fronts_orsi data")
 
 ## eez and eez_coast (was EEZ1)
-files <- get_ccamlr_data("https://data.ccamlr.org/sites/default/files/eez-shapefile-WGS84.zip")
+files <- get_unzip_data("https://data.ccamlr.org/sites/default/files/eez-shapefile-WGS84.zip")
 EEZ1 <- spTransform(raster::shapefile(files[grepl("shp$", files)]), CRS(psproj))
 
 if (FALSE) {
@@ -104,9 +104,17 @@ if (FALSE) {
 }
 
 
+## october and february ice extents
+files <- get_unzip_data("ftp://sidads.colorado.edu/DATASETS/NOAA/G02135/south/monthly/shapefiles/shp_median/median_extent_S_10_1981-2010_polyline_v3.0.zip")
+seaice_oct <- spTransform(raster::shapefile(files[grepl("shp$", files)]), CRS(psproj))
+files <- get_unzip_data("ftp://sidads.colorado.edu/DATASETS/NOAA/G02135/south/monthly/shapefiles/shp_median/median_extent_S_02_1981-2010_polyline_v3.0.zip")
+seaice_feb <- spTransform(raster::shapefile(files[grepl("shp$", files)]), CRS(psproj))
+
+
 SOmap_data <- list(CCAMLR_MPA = MPA1, CCAMLR_statistical_areas = CCAMLR1, CCAMLR_research_blocks = RB1,
                    CCAMLR_SSRU = SSRU1, CCAMLR_SSMU = SSMU1,
                    continent = continent, fronts_orsi = fronts_orsi,
+                   seaice_feb = seaice_feb, seaice_oct = seaice_oct,
                    EEZ = EEZ1)
 
 devtools::use_data(SOmap_data, overwrite = TRUE, compress = "xz")
