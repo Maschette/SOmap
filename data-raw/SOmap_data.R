@@ -111,10 +111,18 @@ files <- get_unzip_data("ftp://sidads.colorado.edu/DATASETS/NOAA/G02135/south/mo
 seaice_feb <- spTransform(raster::shapefile(files[grepl("shp$", files)]), CRS(psproj))
 
 
+## elephant seal tracking
+ellie_url <- "https://github.com/ianjonsen/bsam/raw/master/data/ellie.RData"
+tfile <- tempfile(fileext = "RData")
+curl::curl_download(ellie_url, destfile = tfile)
+load(tfile)
+mirounga_leonina <- ellie
+
 SOmap_data <- list(CCAMLR_MPA = MPA1, CCAMLR_statistical_areas = CCAMLR1, CCAMLR_research_blocks = RB1,
                    CCAMLR_SSRU = SSRU1, CCAMLR_SSMU = SSMU1,
                    continent = continent, fronts_orsi = fronts_orsi,
                    seaice_feb = seaice_feb, seaice_oct = seaice_oct,
+                   mirounga_leonina = mirounga_leonina,
                    EEZ = EEZ1)
 
 devtools::use_data(SOmap_data, overwrite = TRUE, compress = "xz")

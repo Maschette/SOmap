@@ -69,6 +69,14 @@
       \item URL: https://doi.org/10.7265/N5K072F8
       \item License: Please cite
     }
+
+   \item mirounga_leonina
+    \itemize{
+      \item Description: Example elephant seal Argos tracking data
+      \item Source: Data were sourced from the Integrated Marine Observing System (IMOS) - IMOS is supported by the Australian Government through the National Collaborative Research Infrastructure Strategy and the Super Science Initiative.
+      \item URL: https://github.com/ianjonsen/bsam
+      \item License: Please cite
+    }
 }}
 \usage{
 data(SOmap_data)

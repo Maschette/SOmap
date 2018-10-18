@@ -87,7 +87,7 @@
 <a href="#example" class="anchor"></a>Example</h2>
 <p>To make a simple map you can use the following function; use ?SOmap to see all the options for modifying layers.</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw">library</span>(SOmap)</a>
-<a class="sourceLine" id="cb2-2" data-line-number="2"><span class="kw"><a href="http://www.rdocumentation.org/packages/SOmap/topics/SOmap-package">SOmap</a></span>()</a>
+<a class="sourceLine" id="cb2-2" data-line-number="2"><span class="kw"><a href="reference/SOmap.html">SOmap</a></span>()</a>
 <a class="sourceLine" id="cb2-3" data-line-number="3"><span class="co">#&gt; Loading required namespace: rgeos</span></a></code></pre></div>
 <p><img src="reference/figures/README-examplemap-1.png" width="100%"></p>
 <p>There is also <code><a href="reference/SOmanagement.html">SOmanagement()</a></code> which have management layers for the Southern Ocean and <code><a href="reference/SOleg.html">SOleg()</a></code> which gives custom rounded legends for added map layers</p>
@@ -95,7 +95,7 @@
 <a class="sourceLine" id="cb3-2" data-line-number="2"> spiritedMedium &lt;-<span class="st"> </span>grDevices<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/grDevices/topics/colorRamp">colorRampPalette</a></span>(<span class="kw">c</span>(<span class="st">"#4D4140"</span>, <span class="st">"#596F7E"</span>, <span class="st">"#168B98"</span>, <span class="st">"#ED5B67"</span>, <span class="st">"#E27766"</span>, <span class="st">"#DAAD50"</span>, <span class="st">"#EAC3A6"</span>))</a>
 <a class="sourceLine" id="cb3-3" data-line-number="3"> spirited &lt;-<span class="st"> </span><span class="kw">spiritedMedium</span>(<span class="dv">80</span>)</a>
 <a class="sourceLine" id="cb3-4" data-line-number="4"> </a>
-<a class="sourceLine" id="cb3-5" data-line-number="5">SOmap<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/SOmap/topics/SOmap-package">SOmap</a></span>()</a>
+<a class="sourceLine" id="cb3-5" data-line-number="5">SOmap<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/SOmap/topics/SOmap">SOmap</a></span>()</a>
 <a class="sourceLine" id="cb3-6" data-line-number="6"><span class="kw"><a href="reference/SOleg.html">SOleg</a></span>(<span class="dt">position =</span> <span class="st">"topright"</span>,</a>
 <a class="sourceLine" id="cb3-7" data-line-number="7">      <span class="dt">col =</span> spirited,</a>
 <a class="sourceLine" id="cb3-8" data-line-number="8">      <span class="dt">ticks =</span> <span class="dv">6</span>,</a>
@@ -106,13 +106,9 @@
 <a class="sourceLine" id="cb3-13" data-line-number="13"><span class="kw"><a href="reference/SOmanagement.html">SOmanagement</a></span>(<span class="dt">EEZ =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
 <p><img src="reference/figures/README-management-1.png" width="100%"></p>
 <p>An <strong>automatic</strong> plot function <code><a href="reference/SOauto_map.html">SOauto_map()</a></code> will take any data in the form of longitude and latitude vectors and create a guess at a map. It returns the data used to make the map so that further customization can be made.</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1">tfile &lt;-<span class="st"> </span><span class="kw">tempfile</span>(<span class="dt">fileext =</span> <span class="st">"RData"</span>)</a>
-<a class="sourceLine" id="cb4-2" data-line-number="2"><span class="kw">download.file</span>(<span class="st">"https://github.com/ianjonsen/bsam/raw/master/data/ellie.RData"</span>, tfile, <span class="dt">mode =</span> <span class="st">"wb"</span>)</a>
-<a class="sourceLine" id="cb4-3" data-line-number="3"><span class="kw">load</span>(tfile)</a>
-<a class="sourceLine" id="cb4-4" data-line-number="4"><span class="kw">unlink</span>(tfile)</a>
-<a class="sourceLine" id="cb4-5" data-line-number="5"></a>
-<a class="sourceLine" id="cb4-6" data-line-number="6">track &lt;-<span class="st"> </span><span class="kw">head</span>(<span class="kw">do.call</span>(rbind, <span class="kw">lapply</span>(<span class="kw">split</span>(ellie, ellie<span class="op">$</span>id), <span class="cf">function</span>(x) <span class="kw">rbind</span>(<span class="kw">as.matrix</span>(x[<span class="kw">c</span>(<span class="st">"lon"</span>, <span class="st">"lat"</span>)], <span class="ot">NA</span>)))), <span class="dv">-1</span>)</a>
-<a class="sourceLine" id="cb4-7" data-line-number="7"><span class="kw"><a href="reference/SOauto_map.html">SOauto_map</a></span>(track[,<span class="dv">1</span>], track[,<span class="dv">2</span>])</a></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1">ellie &lt;-<span class="st"> </span>SOmap_data<span class="op">$</span>mirounga_leonina</a>
+<a class="sourceLine" id="cb4-2" data-line-number="2">track &lt;-<span class="st"> </span><span class="kw">head</span>(<span class="kw">do.call</span>(rbind, <span class="kw">lapply</span>(<span class="kw">split</span>(ellie, ellie<span class="op">$</span>id), <span class="cf">function</span>(x) <span class="kw">rbind</span>(<span class="kw">as.matrix</span>(x[<span class="kw">c</span>(<span class="st">"lon"</span>, <span class="st">"lat"</span>)], <span class="ot">NA</span>)))),<span class="op">-</span><span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb4-3" data-line-number="3"><span class="kw"><a href="reference/SOauto_map.html">SOauto_map</a></span>(track[,<span class="dv">1</span>], track[,<span class="dv">2</span>])</a></code></pre></div>
 <p><img src="reference/figures/README-automap-1.png" width="100%"></p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"></a>
 <a class="sourceLine" id="cb5-2" data-line-number="2"><span class="kw">graphics.off</span>()</a>

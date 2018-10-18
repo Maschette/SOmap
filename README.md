@@ -67,12 +67,8 @@ returns the data used to make the map so that further customization can
 be made.
 
 ``` r
-tfile <- tempfile(fileext = "RData")
-download.file("https://github.com/ianjonsen/bsam/raw/master/data/ellie.RData", tfile, mode = "wb")
-load(tfile)
-unlink(tfile)
-
-track <- head(do.call(rbind, lapply(split(ellie, ellie$id), function(x) rbind(as.matrix(x[c("lon", "lat")], NA)))), -1)
+ellie <- SOmap_data$mirounga_leonina
+track <- head(do.call(rbind, lapply(split(ellie, ellie$id), function(x) rbind(as.matrix(x[c("lon", "lat")], NA)))),-1)
 SOauto_map(track[,1], track[,2])
 ```
 
