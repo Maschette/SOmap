@@ -231,12 +231,13 @@ SOmap2<-function(Bathleg=TRUE,
     text(CCAMLR1[CCAMLR1$GAR_Long_L=="48.1",], labels = "48.1", col=ccamlrcol,cex = 0.5, pos=2, offset=-0.1)}
   # EEZ
   if(EEZ==TRUE){
-    #load("EEZ.rda")
-    plot(EEZ1,border=eezcol, add = TRUE)}
+
+    plot(SOmap_data$EEZ,border=eezcol, add = TRUE)}
   if(EEZlab==TRUE){
-    text(EEZ1, labels = EEZ1@data$Names, col=eezcol,cex = 0.35, pos=4, offset=0.8)}
+    text(SOmap_data$EEZ, labels = SOmap_data$EEZ$Names, col=eezcol,cex = 0.35, pos=4, offset=0.8)}
   # MPA
   if(MPA==TRUE){
+    MPA1 <- SOmap_data$CCAMLR_MPA
     #load("MPA.rda")
     plot(MPA1,border=mpacol, add = TRUE)
     }

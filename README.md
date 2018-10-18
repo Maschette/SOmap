@@ -39,24 +39,24 @@ SOmap()
 
 <img src="man/figures/README-examplemap-1.png" width="100%" />
 
-There is also SOmanagement() which have management layers for the
-Southern Ocean and SOleg() which gives custom rounded legends for added
-map layers
+There is also `SOmanagement()` which have management layers for the
+Southern Ocean and `SOleg()` which gives custom rounded legends for
+added map layers
 
 ``` r
 ## custom colours
  spiritedMedium <- grDevices::colorRampPalette(c("#4D4140", "#596F7E", "#168B98", "#ED5B67", "#E27766", "#DAAD50", "#EAC3A6"))
- spirited<-spiritedMedium(80)
+ spirited <- spiritedMedium(80)
  
 SOmap::SOmap()
-SOleg(position="topright",
-      col=spirited,
-      ticks=6,
+SOleg(position = "topright",
+      col = spirited,
+      ticks = 6,
       tlabs = c("0","20","40","60","80","100"),
-      Trim=-45,
-      label="Sea Ice")
-plot(ice, col=spirited, add=T,legend=FALSE, alpha=0.95) ## From raadtools
-SOmap::SOmanagement(EEZ = T)
+      Trim = -45,
+      label = "Sea Ice")
+plot(ice, col = spirited, add=TRUE, legend = FALSE, alpha = 0.95) ## From raadtools
+SOmanagement(EEZ = TRUE)
 ```
 
 <img src="man/figures/README-management-1.png" width="100%" />
@@ -69,12 +69,38 @@ used to make the map so that further customization can be made.
 tfile <- tempfile(fileext = "RData")
 download.file("https://github.com/ianjonsen/bsam/raw/master/data/ellie.RData", tfile, mode = "wb")
 load(tfile)
+unlink(tfile)
 
 track <- head(do.call(rbind, lapply(split(ellie, ellie$id), function(x) rbind(as.matrix(x[c("lon", "lat")], NA)))), -1)
 SOauto_map(track[,1], track[,2])
 ```
 
 <img src="man/figures/README-automap-1.png" width="100%" />
+
+``` r
+
+graphics.off()
+data("albatross", package = "adehabitatLT")
+track <- rgdal::project(as.matrix(purrr::map_df(albatross, ~rbind(.x[c("x", "y")], NA))), "+proj=utm +zone=42 +south +datum=WGS84", inv = TRUE)
+ellie_map <- SOauto_map(track[,1], track[,2])
+```
+
+Notice how we may use the plot interactively or also return the data for
+further exploration.
+
+``` r
+names(ellie_map)
+#> [1] "bathy"     "coastline" "target"    "data"      "graticule" "crs"
+```
+
+Objects from `sf` or `sp` may also be used. If a ‘raster’ is given it is
+used only for its extent.
+
+``` r
+SOauto_map(SOmap_data$fronts_orsi, family = "laea", centre_lon = 147)
+```
+
+<img src="man/figures/README-automap-spatial-1.png" width="100%" />
 
 Please note that the ‘SOmap’ project is released with a [Contributor
 Code of Conduct](CODE_OF_CONDUCT.md). By contributing to this project,

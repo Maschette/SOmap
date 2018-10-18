@@ -96,7 +96,7 @@ SOmap<-function(Bathleg=TRUE,
     }
     graphics::box(col = "white")
     if (land) {
-        plot(continent, border = 1, add = TRUE)
+        plot(SOmap_data$continent, border = 1, add = TRUE)
     }
     ## fronts
     if (fronts) {

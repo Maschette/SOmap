@@ -5,12 +5,12 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Round Southern Ocean maps • SOmap</title>
+<title>Southern Ocean maps • SOmap</title>
 <!-- jquery --><script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script><!-- Font Awesome icons --><link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script><!-- sticky kit --><script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script><!-- pkgdown --><link href="pkgdown.css" rel="stylesheet">
-<script src="pkgdown.js"></script><meta property="og:title" content="Round Southern Ocean maps">
-<meta property="og:description" content="Create round Southern Ocean maps in a simple manner with multiple management layer options. Future versions will have the option of adding extra rounded legends for other layers. ">
+<script src="pkgdown.js"></script><meta property="og:title" content="Southern Ocean maps">
+<meta property="og:description" content="Create publication-quality Southern Ocean maps in a simple manner with multiple management layer options. Future versions will have the option of adding extra rounded legends for other layers. ">
 <meta property="og:image" content="/logo.png">
 <meta name="twitter:card" content="summary">
 <!-- mathjax --><script src="https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><!--[if lt IE 9]>
@@ -30,7 +30,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">SOmap</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.1.2</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.1.3</span>
       </span>
     </div>
 
@@ -90,29 +90,41 @@
 <a class="sourceLine" id="cb2-2" data-line-number="2"><span class="kw"><a href="http://www.rdocumentation.org/packages/SOmap/topics/SOmap-package">SOmap</a></span>()</a>
 <a class="sourceLine" id="cb2-3" data-line-number="3"><span class="co">#&gt; Loading required namespace: rgeos</span></a></code></pre></div>
 <p><img src="reference/figures/README-examplemap-1.png" width="100%"></p>
-<p>There is also SOmanagement() which have management layers for the Southern Ocean and SOleg() which gives custom rounded legends for added map layers</p>
+<p>There is also <code><a href="reference/SOmanagement.html">SOmanagement()</a></code> which have management layers for the Southern Ocean and <code><a href="reference/SOleg.html">SOleg()</a></code> which gives custom rounded legends for added map layers</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">## custom colours</a>
 <a class="sourceLine" id="cb3-2" data-line-number="2"> spiritedMedium &lt;-<span class="st"> </span>grDevices<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/grDevices/topics/colorRamp">colorRampPalette</a></span>(<span class="kw">c</span>(<span class="st">"#4D4140"</span>, <span class="st">"#596F7E"</span>, <span class="st">"#168B98"</span>, <span class="st">"#ED5B67"</span>, <span class="st">"#E27766"</span>, <span class="st">"#DAAD50"</span>, <span class="st">"#EAC3A6"</span>))</a>
-<a class="sourceLine" id="cb3-3" data-line-number="3"> spirited&lt;-<span class="kw">spiritedMedium</span>(<span class="dv">80</span>)</a>
+<a class="sourceLine" id="cb3-3" data-line-number="3"> spirited &lt;-<span class="st"> </span><span class="kw">spiritedMedium</span>(<span class="dv">80</span>)</a>
 <a class="sourceLine" id="cb3-4" data-line-number="4"> </a>
 <a class="sourceLine" id="cb3-5" data-line-number="5">SOmap<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/SOmap/topics/SOmap-package">SOmap</a></span>()</a>
-<a class="sourceLine" id="cb3-6" data-line-number="6"><span class="kw"><a href="reference/SOleg.html">SOleg</a></span>(<span class="dt">position=</span><span class="st">"topright"</span>,</a>
-<a class="sourceLine" id="cb3-7" data-line-number="7">      <span class="dt">col=</span>spirited,</a>
-<a class="sourceLine" id="cb3-8" data-line-number="8">      <span class="dt">ticks=</span><span class="dv">6</span>,</a>
+<a class="sourceLine" id="cb3-6" data-line-number="6"><span class="kw"><a href="reference/SOleg.html">SOleg</a></span>(<span class="dt">position =</span> <span class="st">"topright"</span>,</a>
+<a class="sourceLine" id="cb3-7" data-line-number="7">      <span class="dt">col =</span> spirited,</a>
+<a class="sourceLine" id="cb3-8" data-line-number="8">      <span class="dt">ticks =</span> <span class="dv">6</span>,</a>
 <a class="sourceLine" id="cb3-9" data-line-number="9">      <span class="dt">tlabs =</span> <span class="kw">c</span>(<span class="st">"0"</span>,<span class="st">"20"</span>,<span class="st">"40"</span>,<span class="st">"60"</span>,<span class="st">"80"</span>,<span class="st">"100"</span>),</a>
-<a class="sourceLine" id="cb3-10" data-line-number="10">      <span class="dt">Trim=</span><span class="op">-</span><span class="dv">45</span>,</a>
-<a class="sourceLine" id="cb3-11" data-line-number="11">      <span class="dt">label=</span><span class="st">"Sea Ice"</span>)</a>
-<a class="sourceLine" id="cb3-12" data-line-number="12"><span class="kw">plot</span>(ice, <span class="dt">col=</span>spirited, <span class="dt">add=</span>T,<span class="dt">legend=</span><span class="ot">FALSE</span>, <span class="dt">alpha=</span><span class="fl">0.95</span>) ## From raadtools</a>
-<a class="sourceLine" id="cb3-13" data-line-number="13">SOmap<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/SOmap/topics/SOmanagement">SOmanagement</a></span>(<span class="dt">EEZ =</span> T)</a></code></pre></div>
+<a class="sourceLine" id="cb3-10" data-line-number="10">      <span class="dt">Trim =</span> <span class="dv">-45</span>,</a>
+<a class="sourceLine" id="cb3-11" data-line-number="11">      <span class="dt">label =</span> <span class="st">"Sea Ice"</span>)</a>
+<a class="sourceLine" id="cb3-12" data-line-number="12"><span class="kw">plot</span>(ice, <span class="dt">col =</span> spirited, <span class="dt">add=</span><span class="ot">TRUE</span>, <span class="dt">legend =</span> <span class="ot">FALSE</span>, <span class="dt">alpha =</span> <span class="fl">0.95</span>) ## From raadtools</a>
+<a class="sourceLine" id="cb3-13" data-line-number="13"><span class="kw"><a href="reference/SOmanagement.html">SOmanagement</a></span>(<span class="dt">EEZ =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
 <p><img src="reference/figures/README-management-1.png" width="100%"></p>
 <p>An <strong>auto</strong> plot function will take any data in the form of longitude and latitude vectors and create a guess at a map. It returns the data used to make the map so that further customization can be made.</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1">tfile &lt;-<span class="st"> </span><span class="kw">tempfile</span>(<span class="dt">fileext =</span> <span class="st">"RData"</span>)</a>
 <a class="sourceLine" id="cb4-2" data-line-number="2"><span class="kw">download.file</span>(<span class="st">"https://github.com/ianjonsen/bsam/raw/master/data/ellie.RData"</span>, tfile, <span class="dt">mode =</span> <span class="st">"wb"</span>)</a>
 <a class="sourceLine" id="cb4-3" data-line-number="3"><span class="kw">load</span>(tfile)</a>
-<a class="sourceLine" id="cb4-4" data-line-number="4"></a>
-<a class="sourceLine" id="cb4-5" data-line-number="5">track &lt;-<span class="st"> </span><span class="kw">head</span>(<span class="kw">do.call</span>(rbind, <span class="kw">lapply</span>(<span class="kw">split</span>(ellie, ellie<span class="op">$</span>id), <span class="cf">function</span>(x) <span class="kw">rbind</span>(<span class="kw">as.matrix</span>(x[<span class="kw">c</span>(<span class="st">"lon"</span>, <span class="st">"lat"</span>)], <span class="ot">NA</span>)))), <span class="dv">-1</span>)</a>
-<a class="sourceLine" id="cb4-6" data-line-number="6"><span class="kw"><a href="reference/SOauto_map.html">SOauto_map</a></span>(track[,<span class="dv">1</span>], track[,<span class="dv">2</span>])</a></code></pre></div>
+<a class="sourceLine" id="cb4-4" data-line-number="4"><span class="kw">unlink</span>(tfile)</a>
+<a class="sourceLine" id="cb4-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb4-6" data-line-number="6">track &lt;-<span class="st"> </span><span class="kw">head</span>(<span class="kw">do.call</span>(rbind, <span class="kw">lapply</span>(<span class="kw">split</span>(ellie, ellie<span class="op">$</span>id), <span class="cf">function</span>(x) <span class="kw">rbind</span>(<span class="kw">as.matrix</span>(x[<span class="kw">c</span>(<span class="st">"lon"</span>, <span class="st">"lat"</span>)], <span class="ot">NA</span>)))), <span class="dv">-1</span>)</a>
+<a class="sourceLine" id="cb4-7" data-line-number="7"><span class="kw"><a href="reference/SOauto_map.html">SOauto_map</a></span>(track[,<span class="dv">1</span>], track[,<span class="dv">2</span>])</a></code></pre></div>
 <p><img src="reference/figures/README-automap-1.png" width="100%"></p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"></a>
+<a class="sourceLine" id="cb5-2" data-line-number="2"><span class="kw">graphics.off</span>()</a>
+<a class="sourceLine" id="cb5-3" data-line-number="3"><span class="kw">data</span>(<span class="st">"albatross"</span>, <span class="dt">package =</span> <span class="st">"adehabitatLT"</span>)</a>
+<a class="sourceLine" id="cb5-4" data-line-number="4">track &lt;-<span class="st"> </span>rgdal<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/rgdal/topics/project">project</a></span>(<span class="kw">as.matrix</span>(purrr<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/purrr/topics/map">map_df</a></span>(albatross, <span class="op">~</span><span class="kw">rbind</span>(.x[<span class="kw">c</span>(<span class="st">"x"</span>, <span class="st">"y"</span>)], <span class="ot">NA</span>))), <span class="st">"+proj=utm +zone=42 +south +datum=WGS84"</span>, <span class="dt">inv =</span> <span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb5-5" data-line-number="5">ellie_map &lt;-<span class="st"> </span><span class="kw"><a href="reference/SOauto_map.html">SOauto_map</a></span>(track[,<span class="dv">1</span>], track[,<span class="dv">2</span>])</a></code></pre></div>
+<p>Notice how we may use the plot interactively or also return the data for further exploration.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="kw">names</span>(ellie_map)</a>
+<a class="sourceLine" id="cb6-2" data-line-number="2"><span class="co">#&gt; [1] "bathy"     "coastline" "target"    "data"      "graticule" "crs"</span></a></code></pre></div>
+<p>Objects from <code>sf</code> or <code>sp</code> may also be used. (If a ‘raster’ is given it is used only for its extent. )</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="kw"><a href="reference/SOauto_map.html">SOauto_map</a></span>(SOmap_data<span class="op">$</span>fronts_orsi, <span class="dt">family =</span> <span class="st">"laea"</span>, <span class="dt">centre_lon =</span> <span class="dv">147</span>, <span class="dt">input_points =</span> <span class="ot">FALSE</span>)</a></code></pre></div>
+<p><img src="reference/figures/README-automap-spatial-1.png" width="100%"></p>
 <p>Please note that the ‘SOmap’ project is released with a <a href="CODE_OF_CONDUCT.html">Contributor Code of Conduct</a>. By contributing to this project, you agree to abide by its terms.</p>
 </div>
 </div>

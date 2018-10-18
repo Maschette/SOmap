@@ -176,7 +176,7 @@ SOauto_map <- function(x, y, centre_lon = NULL, centre_lat = NULL, family = "ste
   if (isTRUE(coast)) {
     suppressWarnings({
 
-      coastline <- as(sf::st_crop(sf::st_buffer(sf::st_transform(sf::st_as_sf(continent), prj), 0), xmin = raster::xmin(target), xmax = raster::xmax(target), ymin = raster::ymin(target), ymax = raster::ymax(target)), "Spatial")
+      coastline <- as(sf::st_crop(sf::st_buffer(sf::st_transform(sf::st_as_sf(SOmap_data$continent), prj), 0), xmin = raster::xmin(target), xmax = raster::xmax(target), ymin = raster::ymin(target), ymax = raster::ymax(target)), "Spatial")
 
     })
   } else {
@@ -215,7 +215,7 @@ SOauto_map <- function(x, y, centre_lon = NULL, centre_lat = NULL, family = "ste
   if (coast) plot(coastline, add = TRUE)
   par(op)
   if (input_points || input_lines) xy <- rgdal::project(cbind(x, y), prj)
-  if (input_points) points(xy)
+  if (input_points) points(xy, cex = 0.75)
   if (input_lines) lines(xy)
 
   if (graticule) {
@@ -232,7 +232,7 @@ SOauto_map <- function(x, y, centre_lon = NULL, centre_lat = NULL, family = "ste
   # invisible(list(bathy = bathymetry, coastline = coastline, target = target))
   # } else {
 
-  invisible(structure(list(bathy = bathymetry, coastline = coastline, target = target, data = xy, graticule = graticule), class = "SOmap"))
+  invisible(structure(list(bathy = bathymetry, coastline = coastline, target = target, data = xy, graticule = graticule, crs = prj), class = "SOmap"))
 
   #}
 }

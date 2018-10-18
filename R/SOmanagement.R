@@ -170,17 +170,18 @@ SOmanagement<-function(CCAMLR= FALSE,
 
   # EEZ
   if(EEZ==TRUE){
+
     #load("EEZ.rda")
-    plot(EEZ1,border=eezcol, add = TRUE)}
+    plot(SOmap_data$EEZ,border=eezcol, add = TRUE)}
   if(EEZlab==TRUE){
-    text(EEZ1, labels = EEZ1@data$Names, col=eezcol,cex = 0.35, pos=4, offset=0.8)}
+    text(SOmap_data$EEZ, labels = SOmap_data$EEZ@data$Names, col=eezcol,cex = 0.35, pos=4, offset=0.8)}
   # MPA
   if(MPA==TRUE){
     #load("MPA.rda")
-    plot(MPA1,border=mpacol, add = TRUE)
+    plot(SOmap_data$CCAMLR_MPA, border=mpacol, add = TRUE)
   }
   if(MPAlab==TRUE){
-    text(MPA1, labels = MPA1@data$ShortLabel, col=mpacol,cex = 0.35, pos=1, offset=0.2)}
+    text(MPA1, labels = SOmap_data$CCAMLR_MPA$ShortLabel, col=mpacol,cex = 0.35, pos=1, offset=0.2)}
 
   ## Return Par
   #print("ooooh pretty!")

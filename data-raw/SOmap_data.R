@@ -49,15 +49,20 @@ if (any(chk)) stop("non-ASCII chars in SSMU1 data")
 ## continent (was land1)
 library(sf)
 library(dplyr)
-continent <- rnaturalearth::ne_countries(scale = 110, returnclass = "sf") %>%
-  st_buffer(dist = 0) %>%
-  group_by(continent) %>% summarize()
-continent <- st_crop(continent, st_bbox(sf::st_as_sf(spex::spex(raster::extent(-180, 180, -84, 90), crs = "+init=epsg:4326"))))
+library(sp)
+continent <- rnaturalearth::ne_countries(scale = 50, returnclass = "sp")
+continent <- continent[coordinates(continent)[,2] < 20, ]
+
+library(spbabel)
+sptable(continent) <- sptable(continent) %>% dplyr::filter(y_ > -85, island_)
+
+continent <- continent %>% st_as_sf() %>%  st_buffer(dist = 0) %>%
+  group_by(continent) %>% summarize() %>% st_transform(psproj) %>% as("Spatial")
+
+#plot(st_as_sf(continent[2, ]))
+
 
 g <- graticule::graticule(seq(-180, 180, by = 5), c(-84, 0), proj = psproj, tiles = TRUE)
-continent <- as(sf::st_intersection(sf::st_buffer(st_transform(continent, psproj), 0), sf::st_as_sf(g) %>% sf::st_union()) %>%
-                st_cast("MULTIPOLYGON"),
-                "Spatial")
 
 
 chk <- sapply(names(continent), function(z) length(tools::showNonASCII(continent[[z]])) > 0)
