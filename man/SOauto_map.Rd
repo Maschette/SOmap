@@ -4,7 +4,7 @@
 \alias{SOauto_map}
 \title{Default Southern Ocean map}
 \usage{
-SOauto_map(xs, ys, centre_lon = NULL, centre_lat = NULL,
+SOauto_map(x, y, centre_lon = NULL, centre_lat = NULL,
   family = "stere", expand = TRUE, dimXY = c(300, 300),
   bathy = TRUE, coast = TRUE, input_points = TRUE,
   input_lines = TRUE, graticule = TRUE, buffer = 0.05,
@@ -12,9 +12,9 @@ SOauto_map(xs, ys, centre_lon = NULL, centre_lat = NULL,
   trim_background = TRUE, mask = TRUE)
 }
 \arguments{
-\item{xs}{optional input data longitudes}
+\item{x}{optional input data longitudes}
 
-\item{ys}{optional input data latitudes}
+\item{y}{optional input data latitudes}
 
 \item{centre_lon}{optional centre longitude (of the map projection, also used to for plot range if `expand = TRUE`)}
 
@@ -30,9 +30,9 @@ SOauto_map(xs, ys, centre_lon = NULL, centre_lat = NULL,
 
 \item{coast}{optional coastline data to use (or `FALSE` for no coastline)}
 
-\item{input_points}{add points to plot (of xs, ys)}
+\item{input_points}{add points to plot (of x, y)}
 
-\item{input_lines}{add lines to plot   (of xs, ys)}
+\item{input_lines}{add lines to plot   (of x, y)}
 
 \item{graticule}{flag to add a basic graticule}
 
@@ -54,7 +54,7 @@ Provide minimal input information to get a default map. The simplest case is
 to run the function without any inputs at all and it will provide a random default.
 }
 \details{
-To input your data, use input locations as `xs` (longitude) and `ys` (latitude) values, there must be at least
+To input your data, use input locations as `x` (longitude) and `y` (latitude) values, there must be at least
 two locations.
 
 Try families such as 'lcc', 'laea', 'gnom', 'merc', 'aea' if feeling adventurous.

@@ -53,7 +53,7 @@ SOauto_map <- function(x, y, centre_lon = NULL, centre_lat = NULL, family = "ste
                           trim_background = TRUE,
                           mask = TRUE) {
 
-  if (missing(x) || missing(y)) {
+  if (missing(x) && missing(y)) {
     xlim <- sort(runif(2, -359, 359))
     ylim <- sort(runif(2, -89, -20))
 
@@ -64,10 +64,6 @@ SOauto_map <- function(x, y, centre_lon = NULL, centre_lat = NULL, family = "ste
     x <- xy[,1]
     y <- xy[,2]
   }
-  x <- na.omit(x)
-  y <- na.omit(y)
-  stopifnot(length(x) > 1)
-  stopifnot(length(y) > 1)
 
 
   if (is.numeric(x) && is.numeric(y)) {
@@ -84,29 +80,42 @@ SOauto_map <- function(x, y, centre_lon = NULL, centre_lat = NULL, family = "ste
       warning("'x' doesn't look like longlat data")
     }
   } else {
+
     ## we have some kind of object
+    if (inherits(x, "BasicRaster")) {
+      warning("input 'x' is a raster, converting to an extent for a simple plot of input_points/input_lines")
+      x <- spex::spex(x)
+    }
     testx <- try(spbabel::sptable(x))  ##
+    midpoint <- cbind(mean(range(testx$x_)), mean(range(testx$y_)))
     if (inherits(testx, "try-error")) stop("don't understand how to get lon,lat from 'x'")
     testx <- as.matrix(testx[c("x_", "y_")])
     if (!raster::isLonLat(projection(x))) {
-      testx <- rgdal::project(testx, projection(x), inv = TRUE)
+      testx <- rgdal::project(testx, raster::projection(x), inv = TRUE)
+      midpoint <- rgdal::project(midpoint, raster::projection(x), inv = TRUE)
+      ## add the midpoint for good measure
+      testx <- rbind(testx, midpoint)
     }
     x <- testx[,1]
-    y <- testy[,2]
+    y <- testx[,2]
   }
 
+  x <- na.omit(x)
+  y <- na.omit(y)
+  stopifnot(length(x) > 1)
+  stopifnot(length(y) > 1)
 
 
   xlim <- range(x)
   ylim <- range(y)
   if (ylim[1] < -90) {ylim[1] <- -90}
-  if (ylim[2] > 0) {ylim[2] <- 0}
+  if (ylim[2] > 90) {ylim[2] <- 90}
 
   if (is.null(centre_lon)) {
-    centre_lon <- mean(xlim)
+    centre_lon <- zapsmall(round(mean(xlim), digits = 2))
   }
   if (is.null(centre_lat)) {
-    centre_lat <- mean(ylim)
+    centre_lat <-  zapsmall(round(mean(ylim), digits = 2))
   }
 
   template <- "+proj=%s +lon_0=%f +lat_0=%f +datum=WGS84"
@@ -194,7 +203,8 @@ SOauto_map <- function(x, y, centre_lon = NULL, centre_lat = NULL, family = "ste
     }
     if (coast) {
       suppressWarnings({
-      coastline <- as(sf::st_union(sf::st_intersection(sf::st_as_sf(coastline), sf::st_as_sf(gratmask))), "Spatial")
+
+      coastline <- as(sf::st_union(sf::st_intersection(sf::st_as_sf(coastline), sf::st_buffer(sf::st_as_sf(gratmask), 0))), "Spatial")
       })
     }
   }
