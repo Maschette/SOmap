@@ -61,9 +61,10 @@ SOmanagement(EEZ = TRUE)
 
 <img src="man/figures/README-management-1.png" width="100%" />
 
-An **auto** plot function will take any data in the form of longitude
-and latitude vectors and create a guess at a map. It returns the data
-used to make the map so that further customization can be made.
+An **automatic** plot function `SOauto_map()` will take any data in the
+form of longitude and latitude vectors and create a guess at a map. It
+returns the data used to make the map so that further customization can
+be made.
 
 ``` r
 tfile <- tempfile(fileext = "RData")
@@ -81,8 +82,8 @@ SOauto_map(track[,1], track[,2])
 
 graphics.off()
 data("albatross", package = "adehabitatLT")
-track <- rgdal::project(as.matrix(purrr::map_df(albatross, ~rbind(.x[c("x", "y")], NA))), "+proj=utm +zone=42 +south +datum=WGS84", inv = TRUE)
-ellie_map <- SOauto_map(track[,1], track[,2])
+albatrack <- rgdal::project(as.matrix(purrr::map_df(albatross, ~rbind(.x[c("x", "y")], NA))), "+proj=utm +zone=42 +south +datum=WGS84", inv = TRUE)
+ellie_map <- SOauto_map(albatrack[,1], albatrack[,2])
 ```
 
 Notice how we may use the plot interactively or also return the data for
@@ -93,11 +94,12 @@ names(ellie_map)
 #> [1] "bathy"     "coastline" "target"    "data"      "graticule" "crs"
 ```
 
-Objects from `sf` or `sp` may also be used. If a ‘raster’ is given it is
-used only for its extent.
+Objects from `sf` or `sp` may also be used. (If a ‘raster’ is given it
+is used only for its extent.
+)
 
 ``` r
-SOauto_map(SOmap_data$fronts_orsi, family = "laea", centre_lon = 147)
+SOauto_map(SOmap_data$fronts_orsi, family = "laea", centre_lon = 147, input_points = FALSE)
 ```
 
 <img src="man/figures/README-automap-spatial-1.png" width="100%" />

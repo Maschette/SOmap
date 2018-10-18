@@ -78,8 +78,8 @@ SOauto_map(track[,1], track[,2])
 
 graphics.off()
 data("albatross", package = "adehabitatLT")
-track <- rgdal::project(as.matrix(purrr::map_df(albatross, ~rbind(.x[c("x", "y")], NA))), "+proj=utm +zone=42 +south +datum=WGS84", inv = TRUE)
-ellie_map <- SOauto_map(track[,1], track[,2])
+albatrack <- rgdal::project(as.matrix(purrr::map_df(albatross, ~rbind(.x[c("x", "y")], NA))), "+proj=utm +zone=42 +south +datum=WGS84", inv = TRUE)
+ellie_map <- SOauto_map(albatrack[,1], albatrack[,2])
 
 ```
 

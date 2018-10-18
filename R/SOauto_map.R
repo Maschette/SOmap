@@ -8,6 +8,7 @@
 #'
 #' Try families such as 'lcc', 'laea', 'gnom', 'merc', 'aea' if feeling adventurous.
 #'
+#' Using `mask = TRUE` does not work well when the pole is included, so it's `FALSE` by default.
 #' @param x optional input data longitudes
 #' @param y optional input data latitudes
 #' @param centre_lon optional centre longitude (of the map projection, also used to for plot range if `expand = TRUE`)
@@ -24,7 +25,7 @@
 #' @param contours add contours
 #' @param levels contour levels if `contours = TRUE`
 #' @param trim_background crop the resulting bathymetry to its margin of valid values
-#' @param mask logical, used to mask the raster to the graticule
+#' @param mask logical, `FALSE` by default used to mask the raster and coastline to the graticule
 #'
 #' @return the derived target extent and the map projection used, bathymetry, and coastline data
 #' @export
@@ -51,7 +52,7 @@ SOauto_map <- function(x, y, centre_lon = NULL, centre_lat = NULL, family = "ste
                           graticule = TRUE, buffer=0.05,
                           contours=TRUE, levels=c(-500, -1000, -2000),
                           trim_background = TRUE,
-                          mask = TRUE) {
+                          mask = FALSE) {
 
   if (missing(x) && missing(y)) {
     xlim <- sort(runif(2, -359, 359))
@@ -81,33 +82,44 @@ SOauto_map <- function(x, y, centre_lon = NULL, centre_lat = NULL, family = "ste
     }
   } else {
 
+    do_midpoint <- FALSE
     ## we have some kind of object
     if (inherits(x, "BasicRaster")) {
       warning("input 'x' is a raster, converting to an extent for a simple plot of input_points/input_lines")
       x <- spex::spex(x)
+      do_midpoint <- TRUE
+
     }
     testx <- try(spbabel::sptable(x))  ##
-    midpoint <- cbind(mean(range(testx$x_)), mean(range(testx$y_)))
+
+
     if (inherits(testx, "try-error")) stop("don't understand how to get lon,lat from 'x'")
+    ## split on branch
+
+    testx <- head(do.call(rbind, lapply(split(testx, paste(testx$object_, testx$branch_, sep = ":")), function(x) rbind(x, NA))), -1)
     testx <- as.matrix(testx[c("x_", "y_")])
     if (!raster::isLonLat(projection(x))) {
       testx <- rgdal::project(testx, raster::projection(x), inv = TRUE)
-      midpoint <- rgdal::project(midpoint, raster::projection(x), inv = TRUE)
+      midpoint <- NULL
+      if (do_midpoint) {
+        midpoint <- cbind(mean(range(testx$x_)), mean(range(testx$y_)))
+        midpoint <- rgdal::project(midpoint, raster::projection(x), inv = TRUE)
+      }
       ## add the midpoint for good measure
-      testx <- rbind(testx, midpoint)
+      testx <- rbind(testx,midpoint)
     }
     x <- testx[,1]
     y <- testx[,2]
   }
 
-  x <- na.omit(x)
-  y <- na.omit(y)
+  #x <- na.omit(x)
+  #y <- na.omit(y)
   stopifnot(length(x) > 1)
   stopifnot(length(y) > 1)
 
 
-  xlim <- range(x)
-  ylim <- range(y)
+  xlim <- range(x, na.rm = TRUE)
+  ylim <- range(y, na.rm = TRUE)
   if (ylim[1] < -90) {ylim[1] <- -90}
   if (ylim[2] > 90) {ylim[2] <- 90}
 
@@ -216,6 +228,7 @@ SOauto_map <- function(x, y, centre_lon = NULL, centre_lat = NULL, family = "ste
   par(op)
   if (input_points || input_lines) xy <- rgdal::project(cbind(x, y), prj)
   if (input_points) points(xy, cex = 0.75)
+
   if (input_lines) lines(xy)
 
   if (graticule) {

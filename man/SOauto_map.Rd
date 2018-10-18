@@ -9,7 +9,7 @@ SOauto_map(x, y, centre_lon = NULL, centre_lat = NULL,
   bathy = TRUE, coast = TRUE, input_points = TRUE,
   input_lines = TRUE, graticule = TRUE, buffer = 0.05,
   contours = TRUE, levels = c(-500, -1000, -2000),
-  trim_background = TRUE, mask = TRUE)
+  trim_background = TRUE, mask = FALSE)
 }
 \arguments{
 \item{x}{optional input data longitudes}
@@ -44,7 +44,7 @@ SOauto_map(x, y, centre_lon = NULL, centre_lat = NULL,
 
 \item{trim_background}{crop the resulting bathymetry to its margin of valid values}
 
-\item{mask}{logical, used to mask the raster to the graticule}
+\item{mask}{logical, `FALSE` by default used to mask the raster and coastline to the graticule}
 }
 \value{
 the derived target extent and the map projection used, bathymetry, and coastline data
@@ -58,6 +58,8 @@ To input your data, use input locations as `x` (longitude) and `y` (latitude) va
 two locations.
 
 Try families such as 'lcc', 'laea', 'gnom', 'merc', 'aea' if feeling adventurous.
+
+Using `mask = TRUE` does not work well when the pole is included, so it's `FALSE` by default.
 }
 \examples{
 SOauto_map(c(0, 50), c(-70, -50))
