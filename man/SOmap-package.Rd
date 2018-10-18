@@ -2,30 +2,8 @@
 % Please edit documentation in R/SOmap-package.R
 \docType{package}
 \name{SOmap-package}
-\alias{SOmap}
 \alias{SOmap-package}
-\title{SOmap: Southern Ocean maps}
+\title{\pkg{SOmap}}
 \description{
-\if{html}{\figure{logo.png}{options: align='right'}}
-
-Create publication-quality Southern Ocean maps in a simple manner with multiple management layer options. Future versions will have the option of adding extra rounded legends for other layers.
+Create publication-quality Southern Ocean maps in a simple manner with multiple management layer options.
 }
-\seealso{
-Useful links:
-\itemize{
-  \item \url{https://github.com/Maschette/SOmap}
-  \item Report bugs at \url{https://github.com/Maschette/SOmap/issues}
-}
-
-}
-\author{
-\strong{Maintainer}: Dale Maschette \email{dmaschette@westnet.com.au}
-
-Authors:
-\itemize{
-  \item Michael Sumner \email{michael.sumner@aad.gov.au}
-  \item Ben Raymond
-}
-
-}
-\keyword{internal}
