@@ -99,6 +99,12 @@ SOmanagement<-function(CCAMLR= FALSE,
                 bordercol=c("white","black"),
                 gratcol="grey70",
                 iwccol="blue"){
+    
+    ## data
+    SOmap_data <- NULL
+    Bathy <- NULL
+    data("SOmap_data", package = "SOmap", envir = environment())
+    data("Bathy", package = "SOmap", envir = environment())
 
   #### Set up color palette for bathy #
   ramp2<-grDevices::colorRampPalette(c("#54A3D1","#60B3EB","#78C8F0","#98D1F5","#B5DCFF","#BDE1F0","#CDEBFA","#D6EFFF","#EBFAFF","grey92","grey94","grey96", "white"))
@@ -142,9 +148,9 @@ SOmanagement<-function(CCAMLR= FALSE,
 
   if(RB==TRUE){
     #load("RB.rda")
-    raster::plot(RB1, border=rbcol, add=TRUE)}
+    raster::plot(SOmap_data$CCAMLR_research_blocks, border=rbcol, add=TRUE)}
   if(RBlab==TRUE){
-    text(RB1, labels = RB1@data$ShortLabel,col=rbcol, cex = 0.4, pos=4, offset=0.3)}
+    text(SOmap_data$CCAMLR_research_blocks, labels = SOmap_data$CCAMLR_research_blocks@data$ShortLabel,col=rbcol, cex = 0.4, pos=4, offset=0.3)}
   if(SPRFMORB==TRUE){
     sprfmoa<-graticule::graticule(lats=c(-59.9,-57.9),lons= c(-155.3333,-150),proj = raster::projection(Bathy))
     raster::plot(sprfmoa, add=TRUE, col=sprfmocol)
@@ -152,26 +158,24 @@ SOmanagement<-function(CCAMLR= FALSE,
     raster::plot(sprfmob, add=TRUE, col=sprfmocol) }
   if(SSRU==TRUE){
     #load("SSRU.rda")
-    plot(SSRU1,border=ssrucol, add = TRUE)}
+    plot(SOmap_data$CCAMLR_SSRU,border=ssrucol, add = TRUE)}
   if(SSRUlab==TRUE){
-    text(SSRU1, labels = SSRU1@data$ShortLabel,col=ssrucol, cex = 0.4, pos=1, offset=-0.05)}
+    text(SOmap_data$CCAMLR_SSRU, labels = SOmap_data$CCAMLR_SSRU@data$ShortLabel,col=ssrucol, cex = 0.4, pos=1, offset=-0.05)}
   if(SSMU==TRUE){
     #load("SSMU.rda")
-    plot(SSMU1,border=ssmucol, add = TRUE)}
+    plot(SOmap_data$CCAMLR_SSMU,border=ssmucol, add = TRUE)}
   if(SSMUlab==TRUE){
-    text(SSMU1, labels = SSMU1@data$LongLabel,col=ssmucol, cex = 0.5, pos=1, offset=0.6)}
+    text(SOmap_data$CCAMLR_SSMU, labels = SOmap_data$CCAMLR_SSMU@data$LongLabel,col=ssmucol, cex = 0.5, pos=1, offset=0.6)}
   if(CCAMLR==TRUE){
     #load("CCAMLR.rda")
-    plot(CCAMLR1,border=ccamlrcol, add = TRUE)}
+    plot(SOmap_data$CCAMLR_statistical_areas,border=ccamlrcol, add = TRUE)}
   if(CCAMLRlab==TRUE){
-    text(CCAMLR1[CCAMLR1$GAR_Long_L!="48.1"&CCAMLR1$GAR_Long_L!="58.4.2",], labels = cclabs, col=ccamlrcol,cex = 0.5, pos=1, offset=-0.3)
-    text(CCAMLR1[CCAMLR1$GAR_Long_L=="58.4.2",], labels = "58.4.2", col=ccamlrcol,cex = 0.5, pos=3, offset=0.5)
-    text(CCAMLR1[CCAMLR1$GAR_Long_L=="48.1",], labels = "48.1", col=ccamlrcol,cex = 0.5, pos=2, offset=-0.1)}
+    text(SOmap_data$CCAMLR_statistical_areas[SOmap_data$CCAMLR_statistical_areas$GAR_Long_L!="48.1"&SOmap_data$CCAMLR_statistical_areas$GAR_Long_L!="58.4.2",], labels = cclabs, col=ccamlrcol,cex = 0.5, pos=1, offset=-0.3)
+    text(SOmap_data$CCAMLR_statistical_areas[SOmap_data$CCAMLR_statistical_areas$GAR_Long_L=="58.4.2",], labels = "58.4.2", col=ccamlrcol,cex = 0.5, pos=3, offset=0.5)
+    text(SOmap_data$CCAMLR_statistical_areas[SOmap_data$CCAMLR_statistical_areas$GAR_Long_L=="48.1",], labels = "48.1", col=ccamlrcol,cex = 0.5, pos=2, offset=-0.1)}
 
   # EEZ
   if(EEZ==TRUE){
-
-    #load("EEZ.rda")
     plot(SOmap_data$EEZ,border=eezcol, add = TRUE)}
   if(EEZlab==TRUE){
     text(SOmap_data$EEZ, labels = SOmap_data$EEZ@data$Names, col=eezcol,cex = 0.35, pos=4, offset=0.8)}
@@ -181,7 +185,7 @@ SOmanagement<-function(CCAMLR= FALSE,
     plot(SOmap_data$CCAMLR_MPA, border=mpacol, add = TRUE)
   }
   if(MPAlab==TRUE){
-    text(MPA1, labels = SOmap_data$CCAMLR_MPA$ShortLabel, col=mpacol,cex = 0.35, pos=1, offset=0.2)}
+    text(SOmap_data$CCAMLR_MPA, labels = SOmap_data$CCAMLR_MPA$ShortLabel, col=mpacol,cex = 0.35, pos=1, offset=0.2)}
 
   ## Return Par
   #print("ooooh pretty!")

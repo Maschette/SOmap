@@ -49,7 +49,9 @@ SOmap<-function(Bathleg=TRUE,
                 gratcol="grey70") {
     ## data
     SOmap_data <- NULL
+    Bathy <- NULL
     data("SOmap_data", package = "SOmap", envir = environment())
+    data("Bathy", package = "SOmap", envir = environment())
 
     ## Set up color palette for bathy
     ramp2<-grDevices::colorRampPalette(c("#54A3D1", "#60B3EB", "#78C8F0", "#98D1F5", "#B5DCFF", "#BDE1F0", "#CDEBFA", "#D6EFFF", "#EBFAFF", "grey92", "grey94", "grey96", "white"))

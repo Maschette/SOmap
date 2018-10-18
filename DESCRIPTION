@@ -20,6 +20,8 @@ Imports:
     proj4,
     rgeos,
     sf,
+    spbabel,
+    spex,
     tabularaster
 Suggests:
     covr

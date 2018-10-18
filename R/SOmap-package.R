@@ -1,3 +1,3 @@
 #' @keywords internal
-#' @importFrom utils data
+#' @importFrom utils data head
 "_PACKAGE"

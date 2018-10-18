@@ -37,7 +37,11 @@ SOleg<-function(x,
                 tlabs="",
                 Trim=-45,
                 label="Heat"
-){
+                ){
+
+    ## data
+    Bathy <- NULL
+    data("Bathy", package = "SOmap", envir = environment())
 
   if(position=="topleft"){
   bleg<-graticule::graticule(lons = seq(275,355, by=1),lats = c(Trim+3,Trim+5), tiles = TRUE, proj = raster::projection(Bathy))

@@ -54,6 +54,12 @@ SOauto_map <- function(x, y, centre_lon = NULL, centre_lat = NULL, family = "ste
                           trim_background = TRUE,
                           mask = FALSE) {
 
+    ## data
+    SOmap_data <- NULL
+    Bathy <- NULL
+    data("SOmap_data", package = "SOmap", envir = environment())
+    data("Bathy", package = "SOmap", envir = environment())
+
   if (missing(x) && missing(y)) {
     xlim <- sort(runif(2, -359, 359))
     ylim <- sort(runif(2, -89, -20))
