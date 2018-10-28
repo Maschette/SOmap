@@ -10,6 +10,8 @@ status](https://www.r-pkg.org/badges/version/SOmap)](https://cran.r-project.org/
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
+# Development of SOmap has moved to the [AAD repository](https://github.com/AustralianAntarcticDivision/SOmap)
+
 # SOmap <img src="man/figures/logo.png" align="right" />
 
 The goal of SOmap is to make publication quality round Southern Ocean
